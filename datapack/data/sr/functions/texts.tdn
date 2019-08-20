@@ -1,0 +1,29 @@
+@ on compile
+
+var texts = JSON.parse(File.in.read("/texts.json"))
+
+define entity text_ent area_effect_cloud {
+    default nbt {
+        Duration:-1,
+        Age:-2147483648,
+        WaitTime:-2147483648,
+        CustomNameVisible:1b
+    }
+}
+
+define function spawn {
+    kill @e[type=$text_ent]
+    
+    for (text in texts) {
+        var i = 0
+        for (tc in text["text"]) {
+            var coords = text["position"]
+            summon $text_ent{CustomName:${new nbt(new text_component(tc))}} ${coordinates<0 0 0>
+                .deriveMagnitude(coords[0] + 0.5, Axis.X)
+                .deriveMagnitude(coords[1] + 0.5 - i, Axis.Y)
+                .deriveMagnitude(coords[2] + 0.5, Axis.Z)
+            }
+            eval i += 0.25
+        }
+    }
+}

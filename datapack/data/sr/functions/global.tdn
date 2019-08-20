@@ -1,0 +1,111 @@
+@ on compile
+define objective changelog trigger "Список изменений"
+define objective joingreen trigger "Присоединиться к зелёным"
+define objective joinaqua trigger "Присоединиться к голубым"
+define objective joinyellow trigger "Присоединиться к жёлтым"
+define objective joinpurple trigger "Присоединиться к фиолетовым"
+define objective accept trigger "Принять"
+define objective decline trigger "Отклонить"
+define objective leaveteam trigger "Покинуть команду"
+define objective leavewaiting trigger "Покинуть ожидание"
+define objective spectate trigger "Наблюдать"
+define objective help trigger "Справка"
+define objective global
+define objective temp
+define objective const
+define objective Nexus dummy ["Sandstone ",{"text":"Rage","color":"gold","bold":true}]
+define objective extra_lives
+define objective death_list dummy {"text":"Смерти","italic":true}
+define objective coin_for_kill
+define objective timer
+define objective unluck
+define objective kills playerKillCount {"text":"Убийства","italic":true}
+define objective adv.kill_green teamkill.green
+define objective adv.kill_yellow teamkill.yellow
+define objective adv.kill_aqua teamkill.aqua
+define objective adv.kill_purple teamkill.dark_purple
+define objective time_since_death custom:time_since_death
+define objective rejoin custom:leave_game
+define objective death deathCount
+define objective mine_diamond_ore mined:diamond_ore
+define objective adv.mine_coin mined:yellow_glazed_terracotta
+define objective adv.mine_diamond mined:diamond_ore
+define objective adv.deaths deathCount
+define objective adv.mine_torch mined:torch
+define objective placed_pumpkin used:carved_pumpkin
+define objective iron_ingot mined:iron_ore
+define objective gold_ingot mined:gold_ore
+define objective quartz mined:nether_quartz_ore
+define objective dark_oak_log mined:dark_oak_log
+define objective sdark_oak_log mined:stripped_dark_oak_log
+define objective use.carrot_stick used:carrot_on_a_stick
+define objective use.barrier used:ghast_spawn_egg
+define objective use.bag used:cod_spawn_egg
+define objective start trigger "Начать игру"
+define objective generator
+define objective dx
+define objective dy
+define objective dz
+define objective team
+define objective kill_streak playerKillCount
+define objective spec_stun
+define objective streak_bossbar
+define objective stat.totem used:totem_of_undying {"text":"Тотемов использовано","italic":true}
+define objective stat.sgapple used:enchanted_golden_apple {"text":"Зачар. яблок съедено","italic":true}
+define objective use.sgapple used:enchanted_golden_apple
+define objective use.xpbottle used:experience_bottle
+define objective respawning
+
+define function const {
+    @ tag load
+    set negative -> const = -1
+    set 5 -> const = 5
+    set 4 -> const = 4
+    set 3 -> const = 3
+    set 10 -> const = 10
+    set 20 -> const = 20
+}
+
+var teams = [
+    ["green",   "Зелёные",       "green",    "a",    "зелёной",      "зелёных",        coordinates<776 81 1018>,   "-5 202 3",  "[nbt={OnGround:1b},x=-5,y=203,z=4,dx=0,dy=0,dz=0]",
+         "nexus.green",      coordinates<-5 203 4>,      0,          coordinates<845 87 1018>,  "-90",  5,  "зелёную"],
+    ["yellow",  "Жёлтые",       "yellow",       "e",    "жёлтой",      "жёлтых",        coordinates<908 81 886>,    "-5 202 -3", "[nbt={OnGround:1b},x=-5,y=203,z=-4,dx=0,dy=0,dz=0]",
+        "znexus.yellow",    coordinates<-5 203 -4>,     16776960,   coordinates<908 87 955>,    "0",    4,  "жёлтую"],
+    ["aqua",    "Голубые",      "aqua",         "b",    "голубой",     "голубых",       coordinates<1040 81 1018>,  "-1 202 -3", "[nbt={OnGround:1b},x=-1,y=203,z=-4,dx=0,dy=0,dz=0]",
+        "nexus.aqua",       coordinates<-1 203 -4>,     65535,      coordinates<971 87 1018>,   "90",   3,  "голубую"],
+    ["purple",  "Фиолетовые",   "dark_purple",  "5",    "фиолетовой",  "фиолетовых",    coordinates<908 81 1150>,   "-1 202 3",  "[nbt={OnGround:1b},x=-1,y=203,z=4,dx=0,dy=0,dz=0]",
+         "znexus.purple",    coordinates<-1 203 4>,      9437439,    coordinates<908 87 1081>,  "180",  10, "фиолетовую"]
+]
+
+var log = function (receiver, msg) {
+    tellraw $receiver ${new text_component(["[Sandstone ",{"text":"Rage","bold":true,"color":"gold"},"] ",msg])}
+}
+
+var start_timer = function (seconds, text) {
+    eval log(entity<@a>,["До начала игры ",{"text":(string) seconds,"color":"gold"}," ", text, "."])
+    as @a at @s run playsound ui.button.click master @s
+}
+
+var extra_lives_resource = resource</extra_lives>
+define function extra_lives {
+    for (team in teams) {
+        if entity @a[team=${team[0]},scores={mine_diamond_ore=1..}] function {
+            scoreboard players add ${team[1]} extra_lives 1
+            eval log(entity<@a[team=${team[0]}]>, ["За разрушение ядра ваша команда получила +1",{text:"❤",color:team[2]}])
+        }
+    }
+    for (team in teams) {
+        if score ${team[1]} Nexus matches 0 function { 
+            unless score ${team[1]} extra_lives matches 1.. team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"⁰ "]
+            if score ${team[1]} extra_lives matches 1 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"¹ "]
+            if score ${team[1]} extra_lives matches 2 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"² "]
+            if score ${team[1]} extra_lives matches 3 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"³ "]
+            if score ${team[1]} extra_lives matches 4 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"⁴ "]
+            if score ${team[1]} extra_lives matches 5 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"⁵ "]
+            if score ${team[1]} extra_lives matches 6 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"⁶ "]
+            if score ${team[1]} extra_lives matches 7 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"⁷ "]
+            if score ${team[1]} extra_lives matches 8 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"⁸ "]
+            if score ${team[1]} extra_lives matches 9.. team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"⁸⁺ "]
+        }
+    }
+}

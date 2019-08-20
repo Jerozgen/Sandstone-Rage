@@ -1,0 +1,346 @@
+@ require sr:global
+
+# Добавление в команду во время игры
+define function join_game {
+    in the_end tp @s 0 0 0
+    gamemode survival @s
+    clear @s
+    effect clear @s
+    effect give @s instant_health 5 20
+    effect give @s saturation 5 20
+    effect give @s resistance 5 20
+    effect give @s invisibility 5
+    xp set @s 0 points
+    xp set @s 0 levels
+    
+    scoreboard players set @s[team=green] team 1
+    scoreboard players set @s[team=yellow] team 2
+    scoreboard players set @s[team=aqua] team 3
+    scoreboard players set @s[team=purple] team 4
+    
+    for (team in teams) {
+        if entity @s[team=${team[0]}] function {
+            eval log(entity<@a>, ["", {selector:"@s"}, " добавлен в " + team[15] + " команду."])
+            /${"tp @s " + team[6] + " " + team[13]+ " 0"}
+            unless score ${team[1]} Nexus isset function {
+                set ${(entity) team[1]} -> Nexus = 40
+                if score minutes global matches 90.. set ${(entity) team[1]} -> Nexus = 20
+            }
+        }
+    }
+    
+    advancement grant @s only sr:root
+    title @s times 10 20 10
+    title @s title {"text":"Вы в игре!","bold":true}
+    at @s playsound ui.toast.challenge_complete player @s ~ ~ ~ 1 1.15
+}
+as @s[team=green] unless score @s team matches 1 function /join_game
+as @s[team=yellow] unless score @s team matches 2 function /join_game
+as @s[team=aqua] unless score @s team matches 3 function /join_game
+as @s[team=purple] unless score @s team matches 4 function /join_game
+
+as @s[team=none] if score @s team matches 1.. function {
+    if entity @s[gamemode=!spectator] function {
+        tp @s[scores={team=1}] 776 81 1018
+        tp @s[scores={team=2}] 908 81 886
+        tp @s[scores={team=3}] 1040 81 1018
+        tp @s[scores={team=4}] 908 81 1150
+        kill @s
+    }
+    scoreboard players reset @s team
+    gamemode spectator
+    eval log(entity<@a>, ["", {selector:"@s"}, " исключён из команды."])
+}
+
+
+
+# Достижения
+if score @s adv.mine_coin matches 1 advancement grant @s only sr:destroy_coin
+if score @s adv.mine_diamond matches 1 advancement grant @s only sr:diamond
+if score @s adv.mine_diamond matches 40 advancement grant @s only sr:55_diamond
+if score @s adv.deaths matches 30 advancement grant @s only sr:died_30
+if score @s kills matches 40 advancement grant @s only sr:40_kills
+
+for (team in teams) {
+    if entity @s[team=${team[0]}] function {
+        var i = 0
+        for (team_ in teams) {
+            do if (team_[0] != team[0]) {
+                eval i += 1
+                if score @s ${"adv.kill_"+team_[0]} matches 1 advancement grant @s only sr:kill_each_team_player $i
+            }
+        }
+    }
+}
+
+
+# Голем
+if entity @s[scores={placed_pumpkin=1..}] function {
+    for (team in teams) {
+        if entity @s[team=${team[0]}] as @e[type=iron_golem,tag=!init_golem] function {
+            team join ${team[0]} @s
+            data modify entity @s CustomName set value ${new nbt(new text_component({text:"Голем " + team[5],color:team[2]}))}
+            
+        }
+    }
+    data merge entity @e[type=iron_golem,tag=!init_golem,limit=1] {PlayerCreated:0b,Attributes:[{Name:generic.maxHealth,Base:30d}],Health:30f}
+    tag @e[type=iron_golem] add init_golem
+    scoreboard players reset @s placed_pumpkin
+}
+
+
+gamemode spectator @s[team=!none,x=17,y=200,z=13,distance=..128]
+# Наблюдение
+if entity @s[gamemode=spectator] function {
+    if score minutes global matches ..154 unless entity @s[x=708,y=-200,z=818,dx=400,dy=455,dz=400] tp @s 908 112 1018
+    if score minutes global matches 155.. unless entity @s[x=-1000,y=100,z=0,distance=..90] tp @s -1000 100 0
+    
+    # Выход из наблюдателей
+    if entity @s[x=908,y=122,z=1018,distance=..3,team=none] function {
+        gamemode adventure @s
+        tp @s 0 200 0
+    }
+    
+    for (team in teams) {
+        if entity @s[team=${team[0]}] if entity @a[team=${team[0]},gamemode=!spectator] function {
+            # Покидание неверного игрока
+            unless entity @a[team=${team[0]},gamemode=!spectator,distance=..7] if entity @a[team=!${team[0]},gamemode=!spectator,distance=..0.8] function {
+                effect give @s blindness 5 0 true
+                set @s -> spec_stun = 100
+            }
+            unless entity @a[team=${team[0]},gamemode=!spectator,distance=..8] function {
+                effect give @s blindness 2 0 true
+                effect give @s nausea 4 0 true
+            }
+            # Следование за игроком из своей команды
+            unless entity @a[team=${team[0]},gamemode=!spectator,distance=..7] at @p[team=${team[0]},gamemode=!spectator] facing entity @s feet function {
+                tp @s ^ ^ ^6.85 facing entity @p[team=${team[0]},gamemode=!spectator]
+            }
+        }
+    }
+    
+    # Не падай в бездну
+    if entity @s[y=-63,dy=-137] function {
+        gamemode adventure
+        gamemode spectator
+        tp @s ~ -62 ~
+    }
+}
+
+
+# Монета за убийство
+if score @s coin_for_kill matches 1.. function {
+    give @s sunflower{HideFlags:1,Enchantments:[{id:"minecraft:fortune",lvl:-1s}],RepairCost:100,display:{Name:"{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}"}}
+    if entity @s[nbt={ActiveEffects:[{Id:31b}]}] 
+        give @s sunflower{HideFlags:1,Enchantments:[{id:"minecraft:fortune",lvl:-1s}],RepairCost:100,display:{Name:"{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}"}}
+    title @s times 0 25 1
+    title @s title ""
+    title @s subtitle ["",{"text":"⚔","color":"red"}," ",{"selector":"@a[scores={death=1..}]"}]
+    if score @s kill_streak matches 1 title @s actionbar [{"text":"☠","color":"gray"},{"text":"☠☠☠","color":"dark_gray"}]
+    if score @s kill_streak matches 2 title @s actionbar [{"text":"☠☠","color":"gray"},{"text":"☠☠","color":"dark_gray"}]
+    if score @s kill_streak matches 3 title @s actionbar [{"text":"☠☠☠","color":"gray"},{"text":"☠","color":"dark_gray"}]
+    if score @s kill_streak matches 4 title @s actionbar {"text":"☠☠☠☠","color":"gray"}
+    playsound block.note_block.chime player @s
+    playsound block.note_block.bell player @s ~ ~ ~ 1 0
+    # Серия убийств
+    if score @s kill_streak matches 4.. function {
+        give @s sunflower{HideFlags:1,Enchantments:[{id:"minecraft:fortune",lvl:-1s}],RepairCost:100,display:{Name:"{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}"}}
+        if entity @s[nbt={ActiveEffects:[{Id:31b}]}] 
+            give @s sunflower{HideFlags:1,Enchantments:[{id:"minecraft:fortune",lvl:-1s}],RepairCost:100,display:{Name:"{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}"}}
+        set @s -> streak_bossbar = 100
+        scoreboard players reset @s kill_streak
+    }
+    scoreboard players reset @s coin_for_kill
+}
+
+
+
+
+# Мешок монет
+if score @s use.bag matches 1.. function {
+    give @s minecraft:sunflower{HideFlags:1,Enchantments:[{id:"minecraft:fortune",lvl:-1s}],RepairCost:100,display:{Name:"{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}"}} 6
+    kill @e[tag=bag,distance=..10]
+    scoreboard players reset @s use.bag
+}
+
+
+# Границы
+positioned 908 ~ ~ particle damage_indicator ~-200.75 ~ ~ 0 10 10 0 5 normal @s
+positioned 908 ~ ~ particle damage_indicator ~200.75 ~ ~ 0 10 10 0 5 normal @s
+positioned ~ ~ 1018 particle damage_indicator ~ ~ ~200.75 10 10 0 0 5 normal @s
+positioned ~ ~ 1018 particle damage_indicator ~ ~ ~-200.75 10 10 0 0 5 normal @s
+positioned ~ ~ ~ particle damage_indicator ~ 255 ~ 10 0 10 0 5 normal @s
+
+if entity @s[gamemode=!spectator] unless score @s spec_stun matches 1.. function {
+    # Границы
+    unless entity @s[x=708,y=-200,z=818,dx=400,dy=455,dz=400] unless entity @s[x=17,y=200,z=13,distance=..128] unless entity @s[x=-1000,y=100,z=0,distance=..256] function {
+        title @s times 0 2 6
+        title @s title ""
+        title @s subtitle {"text":"Вы выбрались за границы карты!","color":"red"}
+        effect give @s wither 2 0 true
+        advancement grant @s only sr:out
+    }
+    # Быстрое выпадение из мира
+    if entity @s[y=-64,dy=-10] function {
+        store result score has_amulet temp clear @s music_disc_stal 0
+        if score has_amulet temp matches 1.. function {
+            for (team in teams) {
+                if entity @s[team=${team[0]}] function {
+                    tellraw @a ["",{"selector":"@s"}," переродился с помощью ",{"text":"[тёмного оберега]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"§7Неуязвим.\"','\"§r§lКогда активен:\"','\"§7  Не подвержен §9гравитации§7.\"','\"§9  Владелец§7 при попадании в бездну\"','\"§e  возвращается на базу§7, восстана-\"','\"§7  вливая здоровье и сытость.\"','\"§r§lКогда неактивен:\"','\"§7  Попав в бездну, применяет ко всем\"','\"§7  §9Дурное знамение (2:00)§r*\"','\"\"','\"§r* §eскорость §7генераторов предметов и\"','\"§7  опыта и §eчисло§7 монет с убийств и\"','\"§7  предметов с генераторов блоков\"','\"§7  §eувеличивается в 2 раза\"']}}}"}}]
+                    effect give @s instant_health 5 20
+                    effect give @s saturation 5 20
+                    effect give @s resistance 1 20
+                    /${"tp @s " + team[6] + " " + team[13]+ " 0"}
+                }
+            }
+        }
+        unless score has_amulet temp matches 1.. kill @s
+    }
+} 
+
+
+# [Наблюдать]
+scoreboard players enable @a spectate
+
+# Золотое яблоко
+if score @s use.sgapple matches 1.. function {
+    effect give @s glowing 20 0 false
+    scoreboard players reset @s use.sgapple
+}
+
+
+# Смерть
+if score @s death matches 1.. function {
+    set @a[scores={spec_stun=1..}] -> spec_stun = 1
+    for (team in teams) {
+        if entity @s[team=${team[0]}] summon husk ~ ~ ~ {
+            Tags:["husk_head"],
+            Team:${new nbt(team[0])},
+            ArmorItems:[{id:"minecraft:leather_boots",Count:1b,tag:{display:{color:${new nbt(team[11])}}}},{},{},{}],
+            PersistanceRequired:1b,
+            Attributes:[{Name:generic.movementSpeed,Base:0.375d},{Name:generic.maxHealth,Base:8d}],Health:8f}
+    }
+    loot replace entity @e[tag=husk_head] armor.head loot sr:player_head
+    setblock 0 0 0 air
+    as @e[tag=husk_head] function {
+        setblock 0 0 0 oak_sign{Text1:'["Кадавр ",{"nbt":"ArmorItems[3].tag.SkullOwner.Name","entity":"@e[tag=husk_head,limit=1]"}]',Text2:'""',Text3:'""',Text4:'""'}
+        data modify entity @s CustomName set from block 0 0 0 Text1
+    }
+    tag @e remove husk_head
+    for (team in teams) {
+        if entity @s[team=${team[0]}] function {
+            if score minutes global matches ..139 if score ${team[1]} Nexus matches 0 function {
+                unless score ${team[1]} extra_lives matches 1.. gamemode spectator @s
+                scoreboard players remove ${team[1]} extra_lives 1
+                if score ${team[1]} extra_lives matches 1.. at @a[team=${team[0]}] playsound block.conduit.deactivate master @s ~ ~ ~ 1 0.9
+                if score ${team[1]} extra_lives matches 0 function {
+                    at @a[team=${team[0]}] playsound block.end_portal_frame.fill master @s ~ ~ ~ 1 0.9
+                    eval log(entity<@a[team=${team[0]}]>, ["У вашей команды осталось 0",{"text":"❤","color":team[2]},". Вы больше не сможете возродится."])
+                }
+                function $extra_lives_resource
+            }
+            if score minutes global matches 140.. gamemode spectator @s
+        }
+    }
+    
+    scoreboard players reset @s kill_streak
+    scoreboard players reset @s death
+    scoreboard players remove @s death_list 1
+    
+    scoreboard players set @s respawning 100
+    if entity @s[team=aqua] function {
+        set x -> temp = @s.Pos[0]
+        scoreboard players remove x temp 908
+        if score x temp matches 32.. function {
+            set z -> temp = @s.Pos[2]
+            scoreboard players remove z temp 1018
+            if score z temp matches ..0
+                scoreboard players operation z temp *= negative const
+            if score z temp < x temp scoreboard players set @s respawning 200
+        }
+    }
+    if entity @s[team=green] function {
+        set x -> temp = @s.Pos[0]
+        scoreboard players remove x temp 908
+        if score x temp matches ..-32 function {
+            set z -> temp = @s.Pos[2]
+            scoreboard players remove z temp 1018
+            if score z temp matches 0..
+                scoreboard players operation z temp *= negative const
+            if score z temp > x temp scoreboard players set @s respawning 200
+        }
+    }
+    if entity @s[team=yellow] function {
+        set z -> temp = @s.Pos[2]
+        scoreboard players remove z temp 1018
+        if score z temp matches ..-32 function {
+            set x -> temp = @s.Pos[0]
+            scoreboard players remove x temp 908
+            if score x temp matches 0..
+                scoreboard players operation x temp *= negative const
+            if score x temp > z temp scoreboard players set @s respawning 200
+        }
+    }
+    if entity @s[team=purple] function {
+        set z -> temp = @s.Pos[2]
+        scoreboard players remove z temp 1018
+        if score z temp matches 32.. function {
+            set x -> temp = @s.Pos[0]
+            scoreboard players remove x temp 908
+            if score x temp matches ..0
+                scoreboard players operation x temp *= negative const
+            if score x temp < z temp scoreboard players set @s respawning 200
+        }
+    }
+}
+
+# Таймер возрождения
+if score @s respawning matches 1.. function {
+    tp @s 908 1000 1018
+    effect give @s blindness 2 0 true
+    effect give @s levitation 2 255 true
+    scoreboard players remove @s respawning 1
+    scoreboard players operation respawning_time temp = @s respawning
+    scoreboard players operation respawning_time temp %= 20 const
+    title @s times 0 2 3
+    title @s subtitle "ВОЗРОЖДЕНИЕ"
+    title @a title {"score":{"objective":"temp","name":"respawning_time"},"color":"yellow"}
+    if score @s respawning matches 0 function {
+        set @s -> time_since_death = 1
+        effect clear @s blindness
+        effect clear @s levitation
+        for (team in teams) {
+            if entity @s[team=${team[0]}] /${"tp @s " + team[6] + " " + team[13]+ " 0"}
+        }
+    }
+}
+
+# Возрождение
+if entity @s[team=!none] function {
+    if score @s time_since_death matches 1 unless score @s respawning matches 1.. function {
+        for (team in teams) {
+            if entity @s[team=${team[0]}]
+                /${"tp @s " + team[6] + " " + team[13]+ " 0"}
+            if entity @s[team=${team[0]}] if score ${team[1]} Nexus matches 0
+                replaceitem entity @s armor.feet diamond_boots{
+                    Enchantments:[
+                        {id:"minecraft:vanishing_curse",lvl:1s},
+                        {id:"minecraft:protection",lvl:4s}],
+                    Unbreakable:1b}
+        }
+        if entity @s[gamemode=!spectator] function {
+            replaceitem entity @s armor.head conduit{
+                Unbreakable:1b,
+                display:{Name:"{\"text\":\"Защита от отталкивания\",\"italic\":false}"},
+                Enchantments:[
+                    {id:"minecraft:vanishing_curse",lvl:1s},
+                    {id:"minecraft:binding_curse",lvl:1s}],
+                AttributeModifiers:[{AttributeName:"generic.knockbackResistance",Name:"generic.knockbackResistance",Slot:"head",Amount:1d,Operation:0,UUIDMost:44017l,UUIDLeast:149652l}]}
+            effect give @s resistance 5 9
+        }
+    }
+    if score @s time_since_death matches 1..101
+        particle witch ~ ~.85 ~ 0 0.6 0 0.1 1
+    if score @s time_since_death matches 101
+        replaceitem entity @s armor.head air
+}

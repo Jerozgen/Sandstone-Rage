@@ -1,0 +1,110 @@
+@ on compile
+
+var shops = JSON.parse(File.in.read("/shops.json"))
+
+define function spawn {
+    var shop_number = 0
+    for (shop in shops) {
+        for (villager in shop["villagers"]) {
+            var villager_id = villager["id"]
+            var i = 0
+            function ${(resource) villager_id} {
+                kill @e[tag=${"shop." + villager_id}]
+                for (position in villager["positions"]) {
+                    eval i += 1
+                    var trades = "["
+                    for (trade in shop["trades"]) {
+                        var trade_nbt = "{rewardExp:0b,maxUses:9999999,"
+                        do if (trade.max_uses != null) {
+                            eval trade_nbt = "{rewardExp:0b,maxUses:" + trade.max_uses + ","
+                        }
+                        do if (trade.buy["items"] != null) {
+                            var j = 0
+                            for (item_ in trade.buy["items"]) {
+                                eval j += 1
+                                do if (i == j) {
+                                    eval trade_nbt += "sell:{id:" + new tag_string(item_["item"]) + ",Count:" + new tag_byte(trade.buy.count)
+                                    do if (item_.tag != null) {
+                                        eval trade_nbt += ",tag:" + item_.tag
+                                    }
+                                }
+                            }
+                        } else {
+                            eval trade_nbt += "sell:{id:" + new tag_string(trade.buy["item"]) + ",Count:" + new tag_byte(trade.buy.count)
+                            do if (trade.buy.tag != null) {
+                                eval trade_nbt += ",tag:" + trade.buy.tag
+                            }
+                        }
+                        eval trade_nbt += "}"
+                        
+                        
+                        do if (trade.cost[0]["items"] != null) {
+                            var j = 0
+                            for (item_ in trade.cost[0]["items"]) {
+                                eval j += 1
+                                do if (i == j) {
+                                    eval trade_nbt += "buy:{id:" + new tag_string(item_["item"]) + ",Count:" + new tag_byte(trade.buy.count)
+                                    do if (item_.tag != null) {
+                                        eval trade_nbt += ",tag:" + item_.tag
+                                    }
+                                }
+                            }
+                        } else {    
+                            eval trade_nbt += ",buy:{id:" + new tag_string(trade.cost[0]["item"]) + ",Count:" + new tag_byte(trade.cost[0].count)
+                            do if (trade.cost[0].tag != null)
+                                eval trade_nbt += ",tag:" + trade.cost[0].tag
+                        }
+                        eval trade_nbt += "}"
+                        
+                        do if (trade.cost.length == 2) {
+                            do if (trade.cost[1]["items"] != null) {
+                                var j = 0
+                                for (item_ in trade.cost[1]["items"]) {
+                                    eval j += 1
+                                    do if (i == j) {
+                                        eval trade_nbt += "buyB:{id:" + new tag_string(item_["item"]) + ",Count:" + new tag_byte(trade.buy.count)
+                                        do if (item_.tag != null) {
+                                            eval trade_nbt += ",tag:" + item_.tag
+                                        }
+                                    }
+                                }
+                            } else {
+                                eval trade_nbt += ",buyB:{id:" + new tag_string(trade.cost[1]["item"]) + ",Count:" + new tag_byte(trade.cost[1].count)
+                                do if (trade.cost[1].tag != null)
+                                    eval trade_nbt += ",tag:" + trade.cost[1].tag
+                            }
+                            eval trade_nbt += "}"
+                        }
+                        eval trade_nbt += "}"
+                        eval trades += trade_nbt + ","
+                    }
+                    eval trades = trades.substring(0, trades.length-1)
+                    eval trades += "]"
+                    
+                    var entity_ = "wandering_trader"
+                    var villager_data = ""
+                    do if (villager.type != "wandering_trader") {
+                        eval entity_ = "villager"
+                        eval villager_data = ",VillagerData:{level:5,type:" + new tag_string(villager["type"]) + ",profession:" + new tag_string(villager["profession"]) + "}"
+                    }
+                    eval shop_number += 1
+                    /${"summon " + entity_ + " " + (position[0] + 0.5) + " " + position[1] + " " + (position[2] + 0.5) + " {Tags:[\"shop\",\"shop" + shop_number + "\",\"shop." + villager_id + "\"],Silent:1b,Invulnerable:1b,NoAI:1b,Rotation:[" + new tag_float(position[3]) + ", 0f],CustomName:" + new nbt(new text_component(villager["name"])) + villager_data + ",Offers:{Recipes:" + trades +     "}}"}
+              }
+            }
+        }
+    }
+}
+
+define function tp {
+    as @e[tag=shop] function {
+        var shop_number = 0
+        for (shop in shops) {
+            for (villager in shop["villagers"]) {
+                for (position in villager["positions"]) {
+                    eval shop_number += 1
+                    /${"tp @s[tag=shop" + shop_number + "] "+ (position[0] + 0.5) + " " + position[1] + " " + (position[2] + 0.5) + " " + position[3] + " 0"}
+                }
+            }
+        }
+    }
+}

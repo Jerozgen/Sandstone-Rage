@@ -1,0 +1,396 @@
+@ require sr:global
+@ require sr:stages/game/player
+@ require sr:shops
+
+# Точки возрождения
+spawnpoint @a[team=aqua] 1040 82 1018
+spawnpoint @a[team=yellow] 908 82 886
+spawnpoint @a[team=green] 776 82 1018
+spawnpoint @a[team=purple] 908 82 1150
+
+
+# Достижения
+unless score adv.candle global matches 1.. unless block 908 82 1018 torch function {
+    advancement grant @a[scores={adv.mine_torch=1..}] only sr:candle
+    scoreboard players set adv.candle global 1
+}
+scoreboard players reset @a adv.mine_torch
+
+
+# Предотвращение превращения крестьян в ведьм
+as @e[type=witch] function {
+    function sr:shops/spawn
+    kill @s
+}
+
+
+# Сердце моря и гроза
+as @e[type=item,nbt={Item:{id:"minecraft:heart_of_the_sea"}}] at @s if entity @s[y=0,dy=-100] run function {
+    weather thunder
+    scoreboard players set thunder global 1
+    summon lightning_bolt ~ 5 ~
+    kill @s
+    /bossbar set rain visible true
+}
+if score thunder global matches 1.. run function {
+    store result bossbar rain value scoreboard players add thunder global 1
+    bossbar set rain players @a
+    if score thunder global matches 1740 as @a at @s playsound item.shield.break master @s ~ ~ ~ 1 1.35
+    if score thunder global matches 1760 as @a at @s playsound item.shield.break master @s ~ ~ ~ 1 1.35
+    if score thunder global matches 1780 as @a at @s playsound item.shield.break master @s ~ ~ ~ 1 1.35
+    if score thunder global matches 1800 at @e[tag=lightning_bolt] summon lightning_bolt
+    if score thunder global matches 1810 at @e[tag=lightning_bolt] summon lightning_bolt
+    if score thunder global matches 1820.. function {
+        weather clear
+        scoreboard players reset thunder global
+        /bossbar set rain visible false
+        at @e[tag=lightning_bolt] summon lightning_bolt
+    }
+}
+
+
+# Командный мешок монет
+as @e[type=item,nbt={Item:{id:"minecraft:cod_spawn_egg"}}] data merge entity @s {Invulnerable:1b}
+
+
+# Предотвращение попадания визера в бездну
+as @e[type=wither] at @s if entity @s[y=32,dy=-100] data modify entity @s Motion[1] set value 0.5
+
+
+as @a at @s function sr:stages/game/player
+
+
+# Сущность «Покинуть наблюдение»
+as @e[tag=spectator_exit] at @s tp @s ~ ~ ~ ~1 ~
+
+
+# Отображение информации о серии убийств
+bossbar set kill_streak players @a[scores={streak_bossbar=1..}]
+scoreboard players remove @a[scores={streak_bossbar=1..}] streak_bossbar 1
+
+
+# Тёмный оберег
+if score amulet global matches 1.. function amulet {
+    store result bossbar amulet value scoreboard players get amulet global
+    scoreboard players remove amulet global 1
+    bossbar set amulet players @a
+    if score amulet global matches 1 function {
+        eval log(entity<@a>, ["Тёмный оберег деактивирован."])
+        as @a at @s playsound entity.dolphin.death master @s ~ ~ ~ 0.6 0
+    }
+}
+unless score amulet global matches 1.. bossbar set amulet players
+as @e[type=item,nbt={Item:{id:"minecraft:music_disc_stal"}}] function {
+    set @s.Invulnerable = 1b
+    set @s.Age = 1s
+    at @s particle smoke ~ ~.35 ~ 0 0 0 0.02 3 force
+    if score amulet global matches 1.. data merge entity @s {NoGravity:1b}
+    unless score amulet global matches 1.. at @s if entity @s[y=0,dy=-100] function {
+        summon lightning_bolt ~ 5 ~
+        kill @s
+        effect give @a bad_omen 120
+        eval log(entity<@a>, ["",{"text":"Ко всем применено "},{"text":"Дурное знамение (2:00) ","color":"blue"},{"text":"с "},{"text":"[тёмного оберега]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"§7Неуязвим.\"','\"§r§lКогда активен:\"','\"§7  Не подвержен §9гравитации§7.\"','\"§9  Владелец§7 при попадании в бездну\"','\"§e  возвращается на базу§7, восстана-\"','\"§7  вливая здоровье и сытость.\"','\"§r§lКогда неактивен:\"','\"§7  Попав в бездну, применяет ко всем\"','\"§7  §9Дурное знамение (2:00)§r*\"','\"\"','\"§r* §eскорость §7генераторов предметов и\"','\"§7  опыта и §eчисло§7 монет с убийств и\"','\"§7  предметов с генераторов блоков\"','\"§7  §eувеличивается в 2 раза\"']}}}"}},{"text":". У игроков с этим эффектом "},{"text":"скорость","color":"yellow"},{"text":" генераторов предметов и опыта и "},{"text":"число","color":"yellow"},{"text":" монет с убийств и предметов с генераторов блоков "},{"text":"увеличивается в 2 раза","color":"yellow"},{"text":"."}])
+        playsound entity.ender_dragon.ambient ambient @a ~ ~ ~ 20 0
+    }
+}
+
+
+# Время и события
+unless score disablewin global matches 1 function {
+    scoreboard players add timer global 1
+    if score timer global matches 1200.. function {
+        scoreboard players set timer global 0
+        scoreboard players add minutes global 1
+        var i = 0
+        for(i; i < 300; i += 1) {
+            var h = i / 60
+            var m = i % 60
+            do if (m < 10) eval m = "0" + m
+            if score minutes global matches $i team modify _time suffix [": ",{"text":${(string) h},"color":"gold"},":",{"text":${(string) m},"color":"gold"}]
+        }
+        # 0:01
+        if score minutes global matches 1 function {
+            for (team in teams) {
+                unless score ${team[1]} Nexus matches 1.. at @e[tag=${"nexus_" + team[0]}] setblock ~ ~ ~ structure_block
+            }
+        }
+        # 0:10
+        if score minutes global matches 10 function {
+            title @a times 3 7 3
+            title @a title {"text":"!","bold":true,"color":"red"}
+            eval log(entity<@a>, ["Через ",{"text":"5 минут","color":"red"}," (в 0:15) в центральном магазине появится ",{"text":"[тёмный оберег]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"§7Неуязвим.\"','\"§r§lКогда активен:\"','\"§7  Не подвержен §9гравитации§7.\"','\"§9  Владелец§7 при попадании в бездну\"','\"§e  возвращается на базу§7, восстана-\"','\"§7  вливая здоровье и сытость.\"','\"§r§lКогда неактивен:\"','\"§7  Попав в бездну, применяет ко всем\"','\"§7  §9Дурное знамение (2:00)§r*\"','\"\"','\"§r* §eскорость §7генераторов предметов и\"','\"§7  опыта и §eчисло§7 монет с убийств и\"','\"§7  предметов с генераторов блоков\"','\"§7  §eувеличивается в 2 раза\"']}}}"}}," в ",{"text":"единственном","underlined":true}," экземпляре."])
+            as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
+        }
+        # 0:15
+        if score minutes global matches 15 function {
+            title @a times 3 7 3
+            title @a title {"text":"!","bold":true,"color":"red"}
+            eval log(entity<@a>, ["В центральном магазине появился ",{"text":"[тёмный оберег]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"§7Неуязвим.\"','\"§r§lКогда активен:\"','\"§7  Не подвержен §9гравитации§7.\"','\"§9  Владелец§7 при попадании в бездну\"','\"§e  возвращается на базу§7, восстана-\"','\"§7  вливая здоровье и сытость.\"','\"§r§lКогда неактивен:\"','\"§7  Попав в бездну, применяет ко всем\"','\"§7  §9Дурное знамение (2:00)§r*\"','\"\"','\"§r* §eскорость §7генераторов предметов и\"','\"§7  опыта и §eчисло§7 монет с убийств и\"','\"§7  предметов с генераторов блоков\"','\"§7  §eувеличивается в 2 раза\"']}}}"}}," в ",{"text":"единственном","underlined":true}," экземпляре. Он активен ",{"text":"6 минут","color":"green"}," (до 0:21)."])
+            as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
+            positioned 908 92 1018 as @e[limit=1,tag=shop.center,distance=..1] function {
+                data modify entity @s Offers.Recipes[7].maxUses set value 1
+                data remove entity @s Offers.Recipes[7].sell.tag.display.Lore[0]
+                data remove entity @s Offers.Recipes[7].sell.tag.display.Lore[0]
+            }
+            playsound ambient.cave master @a 908 92 1018 100 0.7
+            bossbar set amulet value 7200
+            bossbar set amulet max 7200
+            bossbar set amulet style notched_6
+            scoreboard players set amulet global 7200
+        }
+        # 0:40
+        if score minutes global matches 35 function {
+            title @a times 3 7 3
+            title @a title {"text":"!","bold":true,"color":"red"}
+            eval log(entity<@a>, ["Через ",{"text":"10 минут","color":"red"}," (в 0:45) в центральном магазине появится второй ",{"text":"[тёмный оберег]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"§7Неуязвим.\"','\"§r§lКогда активен:\"','\"§7  Не подвержен §9гравитации§7.\"','\"§9  Владелец§7 при попадании в бездну\"','\"§e  возвращается на базу§7, восстана-\"','\"§7  вливая здоровье и сытость.\"','\"§r§lКогда неактивен:\"','\"§7  Попав в бездну, применяет ко всем\"','\"§7  §9Дурное знамение (2:00)§r*\"','\"\"','\"§r* §eскорость §7генераторов предметов и\"','\"§7  опыта и §eчисло§7 монет с убийств и\"','\"§7  предметов с генераторов блоков\"','\"§7  §eувеличивается в 2 раза\"']}}}"}}," в ",{"text":"единственном","underlined":true}," экземпляре, и все тёмные обереги будут активны ",{"text":"10 минут","color":"gray"},"."])
+            as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
+        }
+        # 0:45
+        if score minutes global matches 45 function {
+            title @a times 3 7 3
+            title @a title {"text":"!","bold":true,"color":"red"}
+            eval log(entity<@a>, ["В центральном магазине появился второй ",{"text":"[тёмный оберег]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"§7Неуязвим.\"','\"§r§lКогда активен:\"','\"§7  Не подвержен §9гравитации§7.\"','\"§9  Владелец§7 при попадании в бездну\"','\"§e  возвращается на базу§7, восстана-\"','\"§7  вливая здоровье и сытость.\"','\"§r§lКогда неактивен:\"','\"§7  Попав в бездну, применяет ко всем\"','\"§7  §9Дурное знамение (2:00)§r*\"','\"\"','\"§r* §eскорость §7генераторов предметов и\"','\"§7  опыта и §eчисло§7 монет с убийств и\"','\"§7  предметов с генераторов блоков\"','\"§7  §eувеличивается в 2 раза\"']}}}"}}," в ",{"text":"единственном","underlined":true}," экземпляре. Все тёмные обереги активны ",{"text":"10 минут","color":"green"}," (до 0:55)."])
+            as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
+            positioned 908 92 1018 data modify entity @e[limit=1,tag=shop.center,distance=..1] Offers.Recipes[8].maxUses set value 1
+            playsound ambient.cave master @a 908 92 1018 100 0.7
+            bossbar set amulet value 12000
+            bossbar set amulet max 12000
+            bossbar set amulet style notched_10
+            scoreboard players set amulet global 12000
+        }
+        # 1:15
+        if score minutes global matches 75 function {
+            title @a times 3 7 3
+            title @a title {"text":"!","bold":true,"color":"red"}
+            eval log(entity<@a>, ["Через ",{"text":"10 минут","color":"red"}," (в 1:25) ядра потеряют 50% ОЗ."])
+            as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
+        }
+        # 1:25
+        if score minutes global matches 85 function {
+            title @a times 3 7 3
+            title @a title {"text":"!","bold":true,"color":"red"}
+            eval log(entity<@a>, ["",{"text":"Прошло "},{"text":"1:25","color":"gold"}," с начала игры. Все ядра потеряли 50% ОЗ."])
+            as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
+            for (team in teams) {
+                if score ${team[1]} Nexus matches 1.. function {
+                    scoreboard players operation diamonds temp = ${team[1]} Nexus
+                    scoreboard players operation diamonds temp /= 2 global
+                    scoreboard players operation ${team[1]} Nexus -= diamonds temp
+                    #if score diamonds temp matches 1.. function {
+                    #    summon item{NoGravity:1b,Invulnerable:1b,PickupDelay:20s,Tags:["countme"],Item:{id:"minecraft:diamond",Count:1b}} ${team[6]}
+                    #    as @e[type=item,tag=countme] function {
+                    #        store result entity @s Item.Count byte 1.0 scoreboard players get diamonds temp
+                    #        tag @s remove countme
+                    #    }
+                    #}
+                }
+            }
+        }
+        # 1:35
+        if score minutes global matches 95 function {
+            title @a times 3 7 3
+            title @a title {"text":"!","bold":true,"color":"red"}
+            eval log(entity<@a>, ["Через ",{"text":"10 минут","color":"red"}," (в 1:45) ядра будут перенесены на остров железа."])
+            as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
+        }
+        # 1:45
+        if score minutes global matches 105 function {
+            title @a times 3 7 3
+            title @a title {"text":"!","bold":true,"color":"red"}
+            eval log(entity<@a>, ["",{"text":"Прошло "},{"text":"1:45","color":"gold"},{"text":" с начала игры. Ядра "},{"text":"перенесены","color":"red"}," на остров железа."])
+            as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
+            at @e[tag=nexus] setblock ~ ~ ~ structure_block
+            for (team in teams) {
+                tp @e[tag=${"nexus_" + team[0]}] ${team[12]}
+                if score ${team[1]} Nexus matches 1.. at @e[tag=${"nexus_" + team[0]}] setblock ~ ~ ~ diamond_ore
+            }
+        }
+        # 2:05
+        if score minutes global matches 125 function {
+            title @a times 3 7 3
+            title @a title {"text":"!","bold":true,"color":"red"}
+            eval log(entity<@a>, ["Через ",{"text":"10 минут","color":"red"}," (в 2:15) граница мира начнёт двигаться к центру."])
+            as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
+        }
+        # 2:15
+        if score minutes global matches 135 function {
+            title @a times 3 7 3
+            title @a title {"text":"!","bold":true,"color":"red"}
+            eval log(entity<@a>, ["",{"text":"Прошло "},{"text":"2:15","color":"gold"},{"text":" с начала игры. "},{"text":"Граница мира","color":"yellow"},{"text":" начала движение к центру. Через "},{"text":"5 минут","color":"red"},{"text":" будет отключено возрождение игроков."}])
+            as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
+            worldborder set 400
+            worldborder set 265 300
+        }
+        # 2:20
+        if score minutes global matches 140 function {
+            title @a times 3 7 3
+            title @a title {"text":"!","bold":true,"color":"red"}
+            eval log(entity<@a>, ["Возрождение игроков отключено."])
+            as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
+            for (team in teams) {
+                team modify ${team[9]} prefix ["",{"text":"×","color":${team[2]}}," "]
+            }
+            worldborder set 265
+            worldborder set 5 600
+        }
+        # 2:30
+        if score minutes global matches 150 function {
+            title @a times 3 7 3
+            title @a title {"text":"!","bold":true,"color":"red"}
+            eval log(entity<@a>, ["Через ",{"text":"5 минут","color":"red"}," (в 2:35) произойдёт телепортация игроков."])
+            as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
+        }
+        # 2:35
+        if score minutes global matches 155 function {
+            title @a times 3 7 3
+            title @a title {"text":"!","bold":true,"color":"red"}
+            eval log(entity<@a>, ["Телепортация."])
+            as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
+            #worldborder set 7
+            #fill 904 255 1022 912 255 1014 air replace structure_void
+            #/spreadplayers 908 1018 6 3 true @a[gamemode=survival]
+            #worldborder set 5 10
+            time set midnight
+            worldborder center -1000 0
+            worldborder set 59
+            worldborder warning distance 200
+            gamerule mobGriefing false
+            kill @e[type=ender_pearl]
+            tp @a[team=aqua] -973 80 0 90 0
+            tp @a[team=purple] -1000 80 27 180 0
+            tp @a[team=green] -1027 80 0 -90 0
+            tp @a[team=yellow] -1000 80 -27 0 0
+            tp @a[team=none] -1000 100 0
+            gamemode adventure @a[gamemode=!spectator]
+            clear @a[gamemode=adventure] carrot_on_a_stick
+        }
+    }
+}
+
+unless score Голубые Nexus matches 1.. effect give @a[gamemode=!spectator,team=aqua,x=900,y=82,z=1018,distance=..250] speed 99999 0 true
+unless score Зелёные Nexus matches 1.. effect give @a[gamemode=!spectator,team=green,x=900,y=82,z=1018,distance=..250] speed 99999 0 true
+unless score Фиолетовые Nexus matches 1.. effect give @a[gamemode=!spectator,team=purple,x=900,y=82,z=1018,distance=..250] speed 99999 0 true
+unless score Жёлтые Nexus matches 1.. effect give @a[gamemode=!spectator,team=yellow,x=900,y=82,z=1018,distance=..250] speed 99999 0 true
+    
+if score minutes global matches 135.. gamemode spectator @a[x=17,y=200,z=13,distance=..128]
+
+# Ядра
+for (team in teams) {
+    at @e[tag=${"nexus_" + team[0]}] unless block ~ ~ ~ diamond_ore if score ${team[1]} Nexus matches 1.. function {
+        setblock ~ ~ ~ diamond_ore
+        kill @e[type=item,distance=..0.5]
+        kill @e[type=experience_orb,distance=..0.5]
+        as @a[scores={mine_diamond_ore=1..},distance=..10] function {
+            title @s[team=${team[0]}] actionbar {"text":"Нельзя разрушать своё ядро!","color":"red"}
+            unless entity @s[team=${team[0]}] function {
+                var give_diamonds = resource</give_diamonds>
+                function give_diamonds {
+                    give @s diamond
+                    xp add @s 5 points
+                }
+                if entity @s[nbt={SelectedItem:{tag:{Enchantments:[{id:"minecraft:fortune",lvl:2s}]}}}] function $give_diamonds
+                if entity @s[nbt={SelectedItem:{tag:{Enchantments:[{id:"minecraft:fortune",lvl:3s}]}}}] function {
+                    function $give_diamonds
+                    function $give_diamonds
+                }
+                scoreboard players remove ${team[1]} Nexus 1
+                as @a[team=${team[0]}] at @s playsound item.shield.block block @s ~ ~ ~ 1 0
+                playsound entity.elder_guardian.hurt block @a ~ ~ ~ 1 0
+                title @a[team=${team[0]}] actionbar {"text":"Ваше ядро разрушают!","color":"red"}
+                
+                if score ${team[1]} Nexus matches 0 function {
+                    playsound entity.zombie_villager.cure block @a ~ ~ ~ 25 0.9
+                    playsound entity.lightning_bolt.thunder ambient @a ~ ~ ~ 25 0.7
+                    playsound item.totem.use player @a ~ ~ ~ 25 0
+                    setblock ~ ~ ~ structure_block
+                    
+                    set extra_lives -> temp = 0
+                    for (team_ in teams) {
+                        do if (team_[0] != team[0])
+                            if score ${team_[1]} Nexus matches 1.. scoreboard players add extra_lives temp 1
+                    }
+                    
+                    eval log(entity<@a>, ["Ядро команды ",{text:team[5],color:team[2]}," разрушено."])
+                    eval log(entity<@a[team=${team[0]}]>, ["За потерю ядра команда получила по 6 монет на каждого участника, ускорение, алмазные ботинки и +",{"score":{objective:"temp",name:"extra_lives"}},{text:"❤",color:team[2]}," за оставшиеся ядра."])
+                    
+                    scoreboard players operation ${team[1]} extra_lives += extra_lives temp
+                    as @a[team=${team[0]}] function {
+                        if data entity @s Inventory[{Slot:100b}] give @s diamond_boots{Enchantments:[{id:"minecraft:vanishing_curse",lvl:1s},{id:"minecraft:protection",lvl:4s}],Unbreakable:1b}
+                        unless data entity @s Inventory[{Slot:100b}] replaceitem entity @s armor.feet diamond_boots{Enchantments:[{id:"minecraft:vanishing_curse",lvl:1s},{id:"minecraft:protection",lvl:4s}],Unbreakable:1b}
+                    }
+                    
+                    if score minutes global matches ..139 function $extra_lives_resource
+                    
+                    give @a[team=${team[0]},gamemode=!spectator,scores={time_since_death=1..}] cod_spawn_egg{EntityTag:{id:"minecraft:armor_stand",NoGravity:1b,Marker:1b,Invisible:1b,Silent:1b,Tags:["bag"]},
+                        display:{
+                            Name:${new nbt(new text_component({italic:false,color:"gold",text:"Мешок монет " + team[4] + " команды"}))},
+                            Lore:['"§r§7Используйте, чтобы превратить в 6 монет"']},Tags:[${new nbt(team[0] + "_coin")},"return"]
+                        }
+                    as @a[team=${team[0]},gamemode=!spectator,scores={time_since_death=0}] 
+                        summon item{Item:{id:"minecraft:cod_spawn_egg",Count:1b,tag:{Tags:[${new nbt(team[0] + "_coin")},"return"],
+                                                EntityTag:{id:"minecraft:armor_stand",NoGravity:1b,Marker:1b,Invisible:1b,Silent:1b,Tags:["bag"]},display:{
+                                                    Name:${new nbt(new text_component({italic:false,color:"gold",text:"Мешок монет " + team[4] + " команды"}))},
+                                                    Lore:['"§r§7Используйте, чтобы превратить в 6 монет"']
+                                                }}}} ${team[6]}
+                }
+            }
+        }
+    }   
+}
+scoreboard players reset @a mine_diamond_ore
+
+
+/execute store result score players global if entity @a[team=!none]
+set sub_players -> temp = pre_players -> global
+scoreboard players operation sub_players temp -= players global
+if score sub_players temp matches 2.. function {
+    set disablewin -> global = 1
+    eval log(entity<@a>, ["",{"text":"Победы отключены. Чтобы включить, введите: "},{"text":"[/function sr:win_enable]","color":"green","clickEvent":{"action":"run_command","value":"/function sr:win_enable"}}])
+}
+
+unless score disablewin global matches 1 function {
+    # Победа
+    if entity @a[gamemode=!spectator,team=green] 
+        unless entity @a[gamemode=!spectator,team=yellow] 
+        unless entity @a[gamemode=!spectator,team=aqua] 
+        unless entity @a[gamemode=!spectator,team=purple] 
+            function {
+                function sr:gend
+                eval log(entity<@a>, ["Победила ",{"text":"зелёная","color":"green"}," команда!"])
+            }
+    unless entity @a[gamemode=!spectator,team=green] 
+        if entity @a[gamemode=!spectator,team=yellow] 
+        unless entity @a[gamemode=!spectator,team=aqua] 
+        unless entity @a[gamemode=!spectator,team=purple] 
+            function {
+                function sr:gend
+                eval log(entity<@a>, ["Победила ",{"text":"жёлтая","color":"yellow"}," команда!"])
+            }
+    unless entity @a[gamemode=!spectator,team=green] 
+        unless entity @a[gamemode=!spectator,team=yellow] 
+        if entity @a[gamemode=!spectator,team=aqua] 
+        unless entity @a[gamemode=!spectator,team=purple] 
+            function {
+                function sr:gend
+                eval log(entity<@a>, ["Победила ",{"text":"голубая","color":"aqua"}," команда!"])
+            }
+    unless entity @a[gamemode=!spectator,team=green] 
+        unless entity @a[gamemode=!spectator,team=yellow] 
+        unless entity @a[gamemode=!spectator,team=aqua] 
+        if entity @a[gamemode=!spectator,team=purple] 
+            function {
+                function sr:gend
+                eval log(entity<@a>, ["Победила ",{"text":"фиолетовая","color":"dark_purple"}," команда!"])
+            }
+}
+if score disablewin global matches 1 title @a actionbar ["Победы отключены! ",{"text":"/function sr:win_enable","color":"gold"}]
+set pre_players -> global = players -> global
+
+define function sr:win_enable {
+    scoreboard players reset disablewin global
+}
+define function sr:win_disable {
+    set disablewin -> global = 1
+}
+
+function sr:antibuild

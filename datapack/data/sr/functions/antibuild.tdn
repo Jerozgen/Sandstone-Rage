@@ -1,0 +1,17 @@
+at @e[tag=nexus] function {
+    fill ~-1 ~-1 ~-1 ~ ~1 ~-1 air destroy
+    fill ~1 ~-1 ~-1 ~1 ~1 ~ air destroy
+    fill ~ ~-1 ~1 ~1 ~1 ~1 air destroy
+    fill ~-1 ~-1 ~ ~-1 ~1 ~1 air destroy
+    setblock ~ ~-1 ~ air destroy
+    setblock ~ ~1 ~ air destroy
+}
+
+#aqua
+fill 1039 81 1019 1041 83 1017 air destroy
+#yellow
+fill 909 81 885 907 83 887 air destroy
+#green
+fill 775 83 1017 777 81 1019 air destroy
+#purple
+fill 907 81 1149 909 83 1151 air destroy

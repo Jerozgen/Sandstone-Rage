@@ -1,0 +1,23 @@
+{
+    "display": {
+        "title": {
+            "text": "Мясорубка"
+        },
+        "description": {
+            "text": "Убейте 40 игроков"
+        },
+        "icon": {
+            "item": "minecraft:beef"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "trigger": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "sr:thunderboy"
+}

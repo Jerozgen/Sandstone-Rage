@@ -1,0 +1,172 @@
+@ require sr:global
+
+# Отображение числа игроков в лобби
+/execute store result score Зелёные Nexus if entity @a[team=green]
+/execute store result score Голубые Nexus if entity @a[team=aqua]
+/execute store result score Жёлтые Nexus if entity @a[team=yellow]
+/execute store result score Фиолетовые Nexus if entity @a[team=purple]
+set none -> temp = 0
+as @a[team=none,gamemode=!spectator] scoreboard players remove none temp 1
+set Без -> Nexus = none -> temp
+
+set total -> temp = 0
+as @a[gamemode=!spectator] scoreboard players remove total temp 1
+set Всего -> Nexus = total -> temp
+
+as @a at @s function {    
+    # [Начать игру]
+    scoreboard players enable @s start
+    unless score @s start matches 0 function {
+        set @s -> start = 0
+        unless entity @s[gamemode=creative] tellraw @s {"text":"Необходимо находится в творческом режиме для запуска игры.","color":"red"}
+        if entity @s[gamemode=creative] function {
+            if score starting global matches 1.. set starting -> global = -1
+            unless score starting global matches -1.. set starting -> global = 201
+            if score starting global matches -1 function {
+                eval log(entity<@a>,"Старт отменён.")
+                as @a at @s run playsound block.note_block.guitar master @s 
+                setblock 17 200 12 air
+                /${"setblock 17 200 12 birch_wall_sign" + new nbt({
+                    Text1:'""',
+                    Text2:"{\"text\":\"Начать игру\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"trigger start\"}}",
+                    Text3:'""',
+                    Text4:"[\"\",{\"text\":\"(\",\"color\":\"dark_gray\"},{\"keybind\":\"key.use\",\"color\":\"dark_gray\"},{\"text\":\")\",\"color\":\"dark_gray\"}]"})}
+                scoreboard players reset starting global
+            }
+        }
+    }
+    
+    
+    # [Присоединиться к команде]
+    for (team in teams) {
+        scoreboard players enable @s ${"join" + team[0]}
+        unless score @s ${"join" + team[0]} matches 0 function {
+            raw ${"if block " + team[7] + " birch_wall_sign"} function {
+                unless entity @a[team=${team[0]}] function {
+                    eval log(entity<@s>,["Вы присоединились к ",{text:team[4],color:team[2]}," команде."])
+                    team join ${team[0]} @s
+                }
+                unless entity @s[team=${team[0]}] if entity @a[team=${team[0]}] raw ${"unless entity @a" + team[8].replace("nbt={OnGround:1b},","")} function {
+                    scoreboard players enable @s leavewaiting
+                    eval log(entity<@s>, "Вы отправили запрос на присоединение.")
+                    eval log(entity<@a[team=${team[0]}]>, ["",{selector:"@s"}," хочет присоединиться к вашей команде, принять его? ",
+                                        {text:"[Да]",color:"green",clickEvent:{action:"run_command",value:"/trigger accept"}}," ",
+                                        {text:"[Нет]",color:"red",clickEvent:{action:"run_command",value:"/trigger decline"}}])
+                    as @a[team=${team[0]}] at @s playsound block.note_block.bell player @s ~ ~ ~ 10 0
+                    tp @s ${team[10]} ~180 ~
+                }
+            } 
+            scoreboard players set @s ${"join" + team[0]} 0
+        }
+    }
+    
+    
+    # [Покинуть ожидание]
+    scoreboard players add @s leavewaiting 0
+    unless score @s leavewaiting matches 0 function {
+        for (team in teams) {
+            raw ${"if entity @s" + team[8].replace("nbt={OnGround:1b},","")} function {
+                eval log(entity<@a[team=${team[0]}]>,[{selector:"@s"},{text:" покинул ожидание принятия в команду."}])
+            }
+        }
+        
+        eval log(entity<@s>,"Вы покинули ожидание принятия в команду.")
+        tp @s 0 200 0 -90 ~
+        
+        scoreboard players reset @s leavewaiting
+    }
+    
+    
+    # [Принять]
+    scoreboard players enable @s accept
+    unless score @s accept matches 0 function {
+        for (team in teams) {
+            if entity @s[team=${team[0]}] function {
+                /${"team join " + team[0] + " @a" + team[8].replace("nbt={OnGround:1b},","")}
+                raw ${"if entity @a" + team[8].replace("nbt={OnGround:1b},","")} function {
+                    eval log(entity<@a[team=${team[0]}]>, ["", {"selector":("@a" + team[8].replace("nbt={OnGround:1b},",""))}," принят в команду."])
+                }
+                /${"scoreboard players reset @a" + team[8].replace("nbt={OnGround:1b},","") + " leavewaiting"}
+                /${"tp @a" + team[8].replace("nbt={OnGround:1b},","") + " 0 200 0 -90 ~"}
+            }
+        }
+        set @s -> accept = 0
+    }
+    
+    
+    # [Отклонить]
+    scoreboard players enable @s decline
+    unless score @s decline matches 0 function {
+        for (team in teams) {
+            if entity @s[team=${team[0]}] function {
+                raw ${"if entity @a" + team[8].replace("nbt={OnGround:1b},","")} function {
+                    eval log(entity<@a[team=${team[0]}]>, ["",{"selector":("@a" + team[8].replace("nbt={OnGround:1b},",""))}," отклонён."])
+                }
+                eval log((entity) ("@a" + team[8].replace("nbt={OnGround:1b},","")), "Вас отклонили.")
+                /${"scoreboard players reset @a" + team[8].replace("nbt={OnGround:1b},","") + " leavewaiting"}
+                /${"tp @a" + team[8].replace("nbt={OnGround:1b},","") + " 0 200 0 -90 ~"}
+            }
+        }
+        set @s -> decline = 0
+    }
+    
+    
+    # [Покинуть команду]
+    scoreboard players enable @s leaveteam
+    unless score @s leaveteam matches 0 function {
+        raw ${"if block -2 201 0 birch_wall_sign"} function {
+            eval log(entity<@s[team=!none]>, "Вы покинули команду.")
+            team join none @s
+        }
+        set @s -> leaveteam = 0
+    }
+    
+    
+    for (team in teams) {
+        if entity ${(entity) ("@s" + team[8])} function {
+            particle composter -2 204.5 0 0.2 0.2 0.4 1 2 normal @s
+            particle composter -4 204.5 0 0.2 0.2 0.4 1 2 normal @s
+            # Автовход в команду из колбы, если никого в команде не найдено
+            unless entity @a[team=${team[0]}] function {
+                eval log(entity<@s>,["Вы присоединились к ",{text:team[4],color:team[2]}," команде."])
+                team join ${team[0]} @s
+                tp @s 0 200 0 -90 ~
+                scoreboard players reset @s leavewaiting
+            }
+        }
+    }
+    
+    # Перезаход
+    if entity @s[scores={rejoin=1..},x=-5,y=203,z=-4,dx=4,dy=0,dz=8] run function {
+        tp @s 0 200 0 -90 ~
+        scoreboard players reset @s leavewaiting
+    }
+    scoreboard players reset @s rejoin
+}
+
+# Счётчик старта игры
+if score starting global matches 1.. function {
+    scoreboard players remove starting global 1
+    
+    if score starting global matches 200 function {
+        eval start_timer(10, "секунд")
+        setblock 17 200 12 air
+        /${"setblock 17 200 12 birch_wall_sign" + new nbt({
+            Text1:'""',
+            Text2:"{\"text\":\"Отмена\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"trigger start\"}}",
+            Text3:'""',
+            Text4:"[\"\",{\"text\":\"(\",\"color\":\"dark_gray\"},{\"keybind\":\"key.use\",\"color\":\"dark_gray\"},{\"text\":\")\",\"color\":\"dark_gray\"}]"})}
+    }
+    if score starting global matches 100 function {eval start_timer(5, "секунд")}
+    if score starting global matches 80 function {eval start_timer(4, "секунды")}
+    if score starting global matches 60 function {eval start_timer(3, "секунды")}
+    if score starting global matches 40 function {eval start_timer(2, "секунды")}
+    if score starting global matches 20 function {eval start_timer(1, "секунда")}
+    
+    if score starting global matches 0 function {
+        setblock 17 200 12 air
+        scoreboard players reset starting global
+        function sr:start
+    }
+
+}

@@ -1,0 +1,17 @@
+as @a if entity @s[team=!none,gamemode=!spectator] unless score @s death_list matches ..-1 advancement grant @s only sr:undying
+
+tp @a 0 200 0
+gamemode adventure @a
+scoreboard players set stage global 2
+scoreboard objectives setdisplay sidebar kills
+as @a at @s playsound ui.toast.challenge_complete player @s ~ ~ ~ 1 0.9
+
+team modify aqua collisionRule never
+team modify green collisionRule never
+team modify yellow collisionRule never
+team modify purple collisionRule never
+
+scoreboard players reset Время Nexus
+
+worldborder set 4000
+time set 13000

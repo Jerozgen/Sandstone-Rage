@@ -1,0 +1,28 @@
+{
+    "display": {
+        "title": {
+            "text": "Змей Горыныч"
+        },
+        "description": {
+            "text": "Призовите визера"
+        },
+        "icon": {
+            "item": "minecraft:wither_skeleton_skull"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": true
+    },
+    "criteria": {
+        "trigger": {
+            "trigger": "minecraft:summoned_entity",
+            "conditions": {
+                "entity": {
+                    "type": "minecraft:wither"
+                }
+            }
+        }
+    },
+    "parent": "sr:iron_golem"
+}

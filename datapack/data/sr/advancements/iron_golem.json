@@ -1,0 +1,28 @@
+{
+    "display": {
+        "title": {
+            "text": "НЕбессмысленное вложение"
+        },
+        "description": {
+            "text": "Призовите железного голема"
+        },
+        "icon": {
+            "item": "minecraft:carved_pumpkin"
+        },
+        "frame": "goal",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": true
+    },
+    "criteria": {
+        "trigger": {
+            "trigger": "minecraft:summoned_entity",
+            "conditions": {
+                "entity": {
+                    "type": "minecraft:iron_golem"
+                }
+            }
+        }
+    },
+    "parent": "sr:root"
+}

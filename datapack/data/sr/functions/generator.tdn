@@ -1,0 +1,50 @@
+@ on compile
+
+var block_generator = function (id, block_, duration) {
+    as @e[tag=$id] at @s function {
+        do if (block_ == block<dark_oak_log>)
+            unless block ~ ~ ~ $block_ unless block ~ ~ ~ stripped_dark_oak_log scoreboard players add @s generator 1
+        else unless block ~ ~ ~ $block_ scoreboard players add @s generator 1
+        if score @s generator matches 1 function {
+            do if (block_ == block<dark_oak_log>) {
+                give @a[scores={sdark_oak_log=1..}] dark_oak_planks 3
+                give @a[scores={dark_oak_log=1..}] dark_oak_planks 3
+                give @a[scores={sdark_oak_log=1..},nbt={ActiveEffects:[{Id:31b}]}] dark_oak_planks 3
+                give @a[scores={dark_oak_log=1..},nbt={ActiveEffects:[{Id:31b}]}] dark_oak_planks 3
+            }
+            setblock ~ ~ ~ structure_block{mode:"LOAD"} destroy
+        }
+        if score @s generator matches ${new int_range(duration, null)} function {
+            setblock ~ ~ ~ $block_
+            set @s -> generator = 0
+        }
+    }
+}
+
+var item_generator = function (id, item_, duration, radius) {
+    as @e[tag=$id] at @s function {
+        if entity @a[distance=${new real_range(null, radius)},gamemode=!spectator,scores={time_since_death=1..}]
+            scoreboard players add @s generator 1
+        if entity @a[distance=${new real_range(null, radius)},gamemode=!spectator,scores={time_since_death=1..},nbt={ActiveEffects:[{Id:31b}]}]
+            scoreboard players add @s generator 1
+        if score @s generator matches ${new int_range(duration, null)} function {
+            do if (item_.itemTag != null)
+                summon item ~ ~ ~ {Item:{id:${new nbt(item_.itemType)},Count:1b,tag:${item_.itemTag}}}
+            else
+                summon item ~ ~ ~ {Item:{id:${new nbt(item_.itemType)},Count:1b}}
+            set @s -> generator = 0
+        }
+    }
+}
+
+var xp_generator = function (id, count, duration) {
+    as @e[tag=$id] at @s positioned ~-.5 ~ ~-.5 function {
+        if entity @a[dx=0,dy=-1,dz=0,gamemode=!spectator,scores={time_since_death=1..}] scoreboard players add @s generator 1
+        if entity @a[dx=0,dy=-1,dz=0,gamemode=!spectator,scores={time_since_death=1..},nbt={ActiveEffects:[{Id:31b}]}] scoreboard players add @s generator 1
+        if score @s generator matches ${new int_range(duration, null)} function { 
+            xp add @p[dx=0,dy=-1,dz=0,gamemode=!spectator,scores={time_since_death=1..}] $count points
+            particle enchant ~.5 ~-.05 ~.5 0 0 0 2 3
+            set @s -> generator = 0
+        }
+    }
+}

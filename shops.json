@@ -1,0 +1,586 @@
+[
+    {
+        "villagers": [
+            {
+                "id":"resources",
+                "type": "desert",
+                "profession": "mason",
+                "name":{"text":"Ресурсы"},
+                "positions": [ 
+                    [910, 81, 880, 90],
+                    [906, 81, 1156, -90],
+                    [1046, 81, 1020, 180],
+                    [770, 81, 1016, 0],
+                    [19, 200, -15, 90]
+                ]
+            }
+        ],
+        "trades":[
+            {
+                "buy": {
+                    "item": "sunflower",
+                    "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "iron_ingot",
+                        "count": 24
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "sunflower",
+                    "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item":"gold_ingot",
+                        "count": 16
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "sunflower",
+                    "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                    "count": 2
+                },
+                "cost": [
+                    {
+                        "item":"diamond",
+                        "count": 3
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "lapis_lazuli",
+                    "count": 5
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "redstone",
+                    "count": 36
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "slime_ball",
+                    "count": 5
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "quartz",
+                    "count": 12
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "villagers": [
+            {
+                "id":"food",
+                "type": "desert",
+                "profession": "butcher",
+                "name":{"text":"Пища"},
+                "positions": [ 
+                    [906, 81, 1153, -90],
+                    [1043, 81, 1020, 180],
+                    [773, 81, 1016, 0],
+                    [910, 81, 883, 90],
+                    [19, 200, -12, 90]
+                ]
+            }
+        ],
+        "trades":[
+            {
+                "buy": {
+                    "item": "apple",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "quartz",
+                        "count": 2
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "pumpkin_pie",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item":"quartz",
+                        "count": 4
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "cake",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item":"quartz",
+                        "count": 5
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "villagers": [
+            {
+                "id":"weapons",
+                "type": "desert",
+                "profession": "fletcher",
+                "name":{"text":"Оружие"},
+                "positions": [ 
+                    [906, 81, 883, -90],
+                    [910, 81, 1153, 90],
+                    [1043, 81, 1016, 0],
+                    [773, 81, 1020, 180],
+                    [15, 200, -12, -90]
+                ]
+            }
+        ],
+        "trades":[
+            {
+                "buy": {
+                    "item": "trident",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 5
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "bow",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count":6
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "crossbow",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 6
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "spectral_arrow",
+                    "count": 10
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "items": [
+                        {
+                            "item": "shield",
+                            "tag": "{BlockEntityTag:{Base:4}}"
+                        },
+                        {
+                            "item": "shield",
+                            "tag": "{BlockEntityTag:{Base:10}}"
+                        },
+                        {
+                            "item": "shield",
+                            "tag": "{BlockEntityTag:{Base:3}}"
+                        },
+                        {
+                            "item": "shield",
+                            "tag": "{BlockEntityTag:{Base:5}}"
+                        },
+                        {
+                            "item": "shield",
+                            "tag": "{BlockEntityTag:{Base:0}}"
+                        }
+                    ],
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    },
+                    {
+                        "item": "iron_ingot",
+                        "count": 12
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "flint_and_steel",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 2
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "tnt",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "blaze_spawn_egg",
+                    "tag":"{EntityTag:{id:\"minecraft:area_effect_cloud\",Duration:-1,Age:-2147483648,WaitTime:-2147483648,Radius:0.0f,Tags:[\"mine\"]},display:{Name:\"[{\\\"text\\\":\\\"Мина\\\",\\\"italic\\\":false,\\\"color\\\":\\\"yellow\\\"},{\\\"translate\\\":\\\" (%s)\\\",\\\"color\\\":\\\"gray\\\",\\\"italic\\\":false,\\\"with\\\":[{\\\"keybind\\\":\\\"key.use\\\"}]}]\",Lore:['\"§r§7Спустя §b5 секунд§7 устанавливает §eвесовую\"','\"§r§eпластину§7, взрывающуюся при изменении веса\"','\"§r§7или разрушении блока после её активации.\"']}}",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    },
+                    {
+                        "item": "tnt",
+                        "count": 1
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "villagers": [
+            {
+                "id":"other",
+                "type": "desert",
+                "profession": "cartographer",
+                "name":{"text":"Разное"},
+                "positions": [ 
+                    [15, 200, -15, -90],
+                    [770, 81, 1020, 180],
+                    [910, 81, 1156, 90],
+                    [906, 81, 880, -90],
+                    [1046, 81, 1016, 0]
+                ]
+            }
+        ],
+        "trades":[
+            {
+                "buy": {
+                    "item": "scaffolding",
+                    "count": 20
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "carrot_on_a_stick",
+                    "tag": "{display:{Name:\"[{\\\"text\\\":\\\"Спасательный куб\\\",\\\"color\\\":\\\"yellow\\\",\\\"italic\\\":false},{\\\"translate\\\":\\\" (%s)\\\",\\\"color\\\":\\\"gray\\\",\\\"italic\\\":false,\\\"with\\\":[{\\\"keybind\\\":\\\"key.use\\\"}]}]\",Lore:['\"§r§7Ставит блок слизи под ногами.\"','\"\"','\"§8§oОдноразовое использование.\"']},Unbreakable:1,HideFlags:63,RepairCost:1006}",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 4
+                    },
+                    {
+                        "item":"slime_ball",
+                        "count": 9
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "enchanting_table",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 9
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "minecraft:bookshelf",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "minecraft:experience_bottle",
+                    "tag": "{display:{Name:\"{\\\"text\\\":\\\"Гиганский пузырёк опыта\\\",\\\"color\\\":\\\"yellow\\\",\\\"italic\\\":false}\",Lore:['\"§r§7Выдаёт §b612§7 ед. опыта.\"','\"§r§7(= 1 мин на острове опыта)\"']}}",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 3
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "heart_of_the_sea",
+                    "tag": "{display:{Name:'{\"text\":\"Сфера хаоса\",\"italic\":false,\"color\":\"yellow\"}',Lore:['\"§r§7После попадания в бездну вызывает\"','\"§r§bгрозовую погоду§7 на §b1,5§7 минуты. После\"','\"§r§7окончания грозы в бедроки централь-\"','\"§r§7ного острова §b3§7 раза ударяет молния.\"']}}",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 4
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "villagers": [
+            {
+                "id":"center",
+                "type": "wandering_trader",
+                "profession": "none",
+                "name":{"text":"Магазин","bold":true,"color":"dark_red"},
+                "positions": [ 
+                    [908, 92, 1018, 180],
+                    [17, 211, 73, 180],
+                    [-1000, 92, 0, 180]
+                ]
+            }
+        ],
+        "trades":[
+            {
+                "buy": {
+                    "item": "totem_of_undying",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 8
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "tipped_arrow",
+                    "tag": "{Potion:\"minecraft:water\",CustomPotionEffects:[{Id:25,Amplifier:-1,Duration:25},{Id:9,Amplifier:-1,Duration:120}],CustomPotionColor:9305283,display:{Name:\"{\\\"text\\\":\\\"Стрела левитации и тошноты\\\",\\\"italic\\\":false}\",Lore:['[{\"translate\":\"effect.minecraft.levitation\",\"color\":\"red\",\"italic\":false},\" (0:01.250)\"]','[{\"translate\":\"effect.minecraft.nausea\",\"color\":\"red\",\"italic\":false},\" (0:06)\"]']},HideFlags:32}",
+                    "count": 12
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 3
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "potion",
+                    "tag": "{HideFlags:63,RepairCost:1002,CustomPotionEffects:[{Id:27,Duration:1200,ShowParticles:0b,ShowIcon:0b}],CustomPotionColor:9593366,display:{Name:\"{\\\"text\\\":\\\"Заклинание: Файербол\\\",\\\"color\\\":\\\"yellow\\\",\\\"italic\\\":false}\",Lore:['\"§r§7Призывает файербол, который\"','\"§r§7летит в направлении взгляда.\"']}}",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 8
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "potion",
+                    "tag": "{Potion:\"minecraft:water\",CustomPotionColor:8964327,CustomPotionEffects:[{Id:14,Duration:500,ShowParticles:0b}],display:{Name:\"{\\\"translate\\\":\\\"item.minecraft.potion.effect.invisibility\\\",\\\"italic\\\":false}\"}}",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 5
+                    },
+                    {
+                        "item":"diamond",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "ender_pearl",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 11
+                    },
+                    {
+                        "item":"diamond",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "firework_rocket",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 5
+                    },
+                    {
+                        "item":"diamond",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "elytra",
+                    "tag": "{display:{Lore:['{\"translate\":\"enchantment.minecraft.binding_curse\",\"color\":\"red\",\"italic\":false}','\"\"','{\"translate\":\"item.modifiers.chest\",\"color\":\"gray\",\"italic\":false}','{\"text\":\"  Cлед частиц\",\"color\":\"white\",\"italic\":false}','[{\"text\":\"  \",\"color\":\"red\",\"italic\":false},{\"translate\":\"effect.minecraft.mining_fatigue\"},\" II\"]','[{\"text\":\"  \",\"color\":\"blue\",\"italic\":false},{\"translate\":\"effect.minecraft.haste\"}]']}}",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 15
+                    },
+                    {
+                        "item":"diamond",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "max_uses": 0,
+                "buy": {
+                    "item": "music_disc_stal",
+                    "tag": "{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"§r§8(можно купить с §60:15§8)\"','\"\"','\"§7Неуязвим.\"','\"§r§lКогда активен:\"','\"§7  Не подвержен §9гравитации§7.\"','\"§9  Владелец§7 при попадании в бездну\"','\"§e  возвращается на базу§7, восстана-\"','\"§7  вливая здоровье и сытость.\"','\"§r§lКогда неактивен:\"','\"§7  Попав в бездну, применяет ко всем\"','\"§7  §9Дурное знамение (2:00)§r*\"','\"\"','\"§r* §eскорость §7генераторов предметов и\"','\"§7  опыта и §eчисло§7 монет с убийств и\"','\"§7  предметов с генераторов блоков\"','\"§7  §eувеличивается в 2 раза\"']}}",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 7
+                    }
+                ]
+            },
+            {
+                "max_uses": 0,
+                "buy": {
+                    "item": "music_disc_stal",
+                    "tag": "{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"§r§8(можно купить с §60:45§8)\"','\"\"','\"§7Неуязвим.\"','\"§r§lКогда активен:\"','\"§7  Не подвержен §9гравитации§7.\"','\"§9  Владелец§7 при попадании в бездну\"','\"§e  возвращается на базу§7, восстана-\"','\"§7  вливая здоровье и сытость.\"','\"§r§lКогда неактивен:\"','\"§7  Попав в бездну, применяет ко всем\"','\"§7  §9Дурное знамение (2:00)§r*\"','\"\"','\"§r* §eскорость §7генераторов предметов и\"','\"§7  опыта и §eчисло§7 монет с убийств и\"','\"§7  предметов с генераторов блоков\"','\"§7  §eувеличивается в 2 раза\"']}}",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 10
+                    },
+                    {
+                        "item":"diamond",
+                        "count": 1
+                    }
+                ]
+            }
+        ]
+    }
+]

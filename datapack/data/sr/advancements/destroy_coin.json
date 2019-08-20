@@ -1,0 +1,23 @@
+{
+    "display": {
+        "title": {
+            "text": "Кто хочет стать миллионером?"
+        },
+        "description": {
+            "text": "Разрушьте блок монет под центром"
+        },
+        "icon": {
+            "item": "minecraft:yellow_glazed_terracotta"
+        },
+        "frame": "goal",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "criteria": {
+        "trigger": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "sr:root"
+}

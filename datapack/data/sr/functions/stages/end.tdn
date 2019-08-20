@@ -1,0 +1,28 @@
+@ require sr:global
+
+spawnpoint @a 0 200 0
+
+as @a at @s function {
+    # [Наблюдать]
+    scoreboard players enable @a spectate
+    
+    # Покинуть наблюдение
+    if entity @s[x=908,y=122,z=1018,distance=..3,gamemode=spectator] function {
+        gamemode adventure @s
+        tp @s 0 200 0
+    }
+}
+
+# Статистика
+scoreboard players add stats global 1
+if score stats global matches 150.. function {
+    if score _stats global matches 3.. scoreboard players set _stats global -1
+    scoreboard players add _stats global 1
+    
+    if score _stats global matches 0 scoreboard objectives setdisplay sidebar death_list
+    if score _stats global matches 1 scoreboard objectives setdisplay sidebar kills
+    if score _stats global matches 2 scoreboard objectives setdisplay sidebar stat.sgapple
+    if score _stats global matches 3 scoreboard objectives setdisplay sidebar stat.totem
+    
+    set stats -> global = 0
+}

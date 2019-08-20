@@ -1,0 +1,23 @@
+{
+    "display": {
+        "title": {
+            "text": "Разрушитель миров"
+        },
+        "description": {
+            "text": "Разрушьте алмазную руду 40 раз"
+        },
+        "icon": {
+            "item": "minecraft:chorus_flower"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "trigger": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "sr:diamond"
+}

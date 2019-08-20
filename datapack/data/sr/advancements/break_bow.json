@@ -1,0 +1,29 @@
+{
+    "display": {
+        "title": {
+            "text": "Лук, заставивший плакать"
+        },
+        "description": {
+            "text": "Используйте лук, пока он не сломается"
+        },
+        "icon": {
+            "item": "minecraft:bow"
+        },
+        "frame": "task",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": true
+    },
+    "criteria": {
+        "trigger": {
+            "trigger": "minecraft:item_durability_changed",
+            "conditions": {
+                "durability": 0,
+                "item": {
+                    "item": "minecraft:bow"
+                }
+            }
+        }
+    },
+    "parent": "sr:sniper"
+}

@@ -1,0 +1,23 @@
+{
+    "display": {
+        "title": {
+            "text": "Хорошее начало"
+        },
+        "description": {
+            "text": "Разрушьте алмазную руду"
+        },
+        "icon": {
+            "item": "minecraft:diamond_ore"
+        },
+        "frame": "task",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "trigger": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "sr:destroy_coin"
+}

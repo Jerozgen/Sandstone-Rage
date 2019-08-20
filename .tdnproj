@@ -1,0 +1,7 @@
+{
+  "default-namespace": "sr",
+  "language-level": 2,
+  "datapack-output": "J:\\Minecraft\\server1.13\\Sandstone Rage\\datapacks\\Sandstone Rage",
+  "resources-output": "C:\\Users\\Jerozgen\\Trident\\out\\Sandstone Rage-resources",
+  "export-comments": false
+}

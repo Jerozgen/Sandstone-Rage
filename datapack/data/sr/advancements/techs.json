@@ -1,0 +1,50 @@
+{
+    "display": {
+        "title": {
+            "text": "Технологии будущего"
+        },
+        "description": {
+            "text": "Получите сферу хаоса, подушку безопасности и мину"
+        },
+        "icon": {
+            "item": "minecraft:daylight_detector"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "criteria": {
+        "heart": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:heart_of_the_sea"
+                    }
+                ]
+            }
+        },
+        "safe": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:carrot_on_a_stick"
+                    }
+                ]
+            }
+        },
+        "mine": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:light_weighted_pressure_plate"
+                    }
+                ]
+            }
+        }
+    },
+    "parent": "sr:piston"
+}

@@ -1,0 +1,102 @@
+@ require sr:global
+
+scoreboard players reset Всего Nexus
+scoreboard players reset Без Nexus
+
+scoreboard players reset * death
+scoreboard players reset * death_list
+scoreboard players reset * kills
+scoreboard players reset * kill_streak
+scoreboard players reset * generator
+scoreboard players reset @a death
+scoreboard players reset @a death_list
+scoreboard players reset @a kills
+scoreboard players reset @a kill_streak
+scoreboard players reset @e generator
+scoreboard players add @a[team=!none] death_list 0
+scoreboard players add @a[team=!none] kills 0
+scoreboard players reset adv.candle global
+
+in the_end tp @a[team=!none] 0 0 0
+gamemode survival @a[team=!none]
+clear @a[team=!none]
+xp set @a[team=!none] 0 points
+xp set @a[team=!none] 0 levels
+
+tp @a[team=aqua] 1040 81 1018 90 0
+tp @a[team=purple] 908 81 1150 180 0
+tp @a[team=green] 776 81 1018 -90 0
+tp @a[team=yellow] 908 81 886 0 0
+
+effect clear @a[team=!none]
+effect give @a[team=!none] instant_health 5 20 true
+effect give @a[team=!none] saturation 5 20 true
+effect give @a[team=!none] resistance 5 20 true
+effect give @a[team=!none] fire_resistance 20 0 true
+effect give @a[team=!none] invisibility 5 0 true
+
+scoreboard players set @a[team=green] team 1
+scoreboard players set @a[team=yellow] team 2
+scoreboard players set @a[team=aqua] team 3
+scoreboard players set @a[team=purple] team 4
+
+
+team modify nexus.aqua suffix ""
+team modify nexus.green suffix ""
+team modify znexus.yellow suffix ""
+team modify znexus.purple suffix ""
+
+set stage -> global = 1
+set time_from_start -> global = 0
+set Время -> Nexus = -1
+
+scoreboard objectives setdisplay sidebar Nexus
+
+set Зелёные -> Nexus = 40
+set Жёлтые -> Nexus = 40
+set Фиолетовые -> Nexus = 40
+set Голубые -> Nexus = 40
+
+set Голубые -> extra_lives = 0
+set Зелёные -> extra_lives = 0
+set Жёлтые -> extra_lives = 0
+set Фиолетовые -> extra_lives = 0
+
+unless entity @a[team=green] function {
+    scoreboard players reset Зелёные Nexus
+    at @e[tag=nexus_green] run setblock ~ ~ ~ structure_block
+}
+unless entity @a[team=yellow] function {
+    scoreboard players reset Жёлтые Nexus
+    at @e[tag=nexus_yellow] run setblock ~ ~ ~ structure_block
+}
+unless entity @a[team=purple] function {
+    scoreboard players reset Фиолетовые Nexus
+    at @e[tag=nexus_purple] run setblock ~ ~ ~ structure_block
+}
+unless entity @a[team=aqua] function {
+    scoreboard players reset Голубые Nexus
+    at @e[tag=nexus_aqua] run setblock ~ ~ ~ structure_block
+}
+
+team modify aqua collisionRule pushOwnTeam
+team modify green collisionRule pushOwnTeam
+team modify yellow collisionRule pushOwnTeam
+team modify purple collisionRule pushOwnTeam
+
+team modify znexus.yellow prefix {"text":"→ ","color":"yellow"}
+team modify znexus.purple prefix {"text":"→ ","color":"dark_purple"}
+team modify nexus.green prefix {"text":"→ ","color":"green"}
+team modify nexus.aqua prefix {"text":"→ ","color":"aqua"}
+
+gamerule randomTickSpeed 3
+gamerule reducedDebugInfo true
+
+worldborder set 4000
+time set 23650
+difficulty normal
+
+advancement grant @a[team=!none] only sr:root
+title @a times 10 20 10
+title @a title {"text":"Игра начата!","bold":true}
+as @a at @s playsound ui.toast.challenge_complete player @s ~ ~ ~ 1 1.15

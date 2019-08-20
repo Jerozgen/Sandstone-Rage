@@ -1,0 +1,29 @@
+{
+    "display": {
+        "title": {
+            "text": "Это птица? Это самолёт?"
+        },
+        "description": {
+            "text": "Пролевитируйте 4 секунды"
+        },
+        "icon": {
+            "item": "minecraft:tipped_arrow",
+            "nbt": "{Potion:\"minecraft:water\",CustomPotionEffects:[{Id:25,Duration:9600}]}"
+        },
+        "frame": "goal",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": true
+    },
+    "criteria": {
+        "trigger": {
+            "trigger": "minecraft:levitation",
+            "conditions": {
+                "duration": {
+                    "min": 80
+                }
+            }
+        }
+    },
+    "parent": "sr:outside_the_world"
+}

@@ -1,0 +1,36 @@
+{
+    "display": {
+        "title": {
+            "text": "Снайпер"
+        },
+        "description": {
+            "text": "Попадите в игрока с расстояния более 75 метров"
+        },
+        "icon": {
+            "item": "minecraft:arrow"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "killed_skeleton": {
+            "trigger": "minecraft:player_hurt_entity",
+            "conditions": {
+                "entity": {
+                    "type": "minecraft:player",
+                    "distance": {
+                        "horizontal": {
+                            "min": 75.0
+                       }
+                    }
+                },
+                "killing_blow": {
+                    "is_projectile": true
+                }
+            }
+        }
+      },
+    "parent": "sr:power_5"
+}

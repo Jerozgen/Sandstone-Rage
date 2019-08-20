@@ -1,0 +1,160 @@
+@ require sr:global
+
+# Инициализация игрока
+if entity @s[tag=!init_player] function {
+    gamemode adventure
+    tp @s 0 200 0 -90 0
+    spawnpoint @s 0 200 0
+    tag @s add init_player
+    team join none @s
+    scoreboard players reset @s
+    scoreboard players set @s changelog 1
+    if score stage global matches 1 gamemode spectator
+}
+
+# Изменение цвета щита
+for (team in teams) {
+    store result entity @s[team=${team[0]}] Inventory[{id:"minecraft:shield"}].tag.BlockEntityTag.Base int 1 scoreboard players get ${(string) team[14]} const
+}
+
+
+# Файербол
+store result score @s unluck effect clear @s unluck
+if entity @s[scores={unluck=1..}] function {
+    set x -> temp = @s.Pos[0] * 1000000
+    set y -> temp = @s.Pos[1] * 1000000
+    set z -> temp = @s.Pos[2] * 1000000
+    
+    summon area_effect_cloud ^ ^ ^0.001 {Tags:["fireball_init"],Duration:60}
+    anchored eyes positioned ^ ^ ^ anchored feet function {
+        summon area_effect_cloud ^ ^ ^0.8 {Tags:["fireball_spawner","spawner"],Duration:60}
+        
+        set @e[tag=fireball_spawner,tag=spawner,tag=!init,limit=1] -> dx = @e[tag=fireball_init,tag=!init,limit=1].Pos[0] * 1000000
+        set @e[tag=fireball_spawner,tag=spawner,tag=!init,limit=1] -> dy = @e[tag=fireball_init,tag=!init,limit=1].Pos[1] * 1000000
+        set @e[tag=fireball_spawner,tag=spawner,tag=!init,limit=1] -> dz = @e[tag=fireball_init,tag=!init,limit=1].Pos[2] * 1000000
+        kill @e[tag=fireball_init]
+        
+        scoreboard players operation @e[tag=fireball_spawner,tag=spawner,tag=!init,limit=1] dx -= x temp
+        scoreboard players operation @e[tag=fireball_spawner,tag=spawner,tag=!init,limit=1] dy -= y temp
+        scoreboard players operation @e[tag=fireball_spawner,tag=spawner,tag=!init,limit=1] dz -= z temp
+        tag @e[tag=fireball_spawner,tag=spawner] add init
+        
+        summon area_effect_cloud ^ ^ ^1.3 {Tags:["fireball_spawner","flame"],Duration:51}
+        summon area_effect_cloud ^ ^ ^1.8 {Tags:["fireball_spawner","flame"],Duration:52}
+        summon area_effect_cloud ^ ^ ^2.3 {Tags:["fireball_spawner","flame"],Duration:53}
+        summon area_effect_cloud ^ ^ ^2.8 {Tags:["fireball_spawner","flame"],Duration:54}
+        summon area_effect_cloud ^ ^ ^3.3 {Tags:["fireball_spawner","flame"],Duration:55}
+        summon area_effect_cloud ^ ^ ^3.8 {Tags:["fireball_spawner","flame"],Duration:56}
+        summon area_effect_cloud ^ ^ ^4.3 {Tags:["fireball_spawner","flame"],Duration:57}
+        summon area_effect_cloud ^ ^ ^4.8 {Tags:["fireball_spawner","flame"],Duration:58}
+        summon area_effect_cloud ^ ^ ^5.3 {Tags:["fireball_spawner","flame"],Duration:59}
+        summon area_effect_cloud ^ ^ ^5.8 {Tags:["fireball_spawner","flame"],Duration:60}
+    }
+}
+
+
+# Автоплавка
+for (el in ["iron_ingot", "gold_ingot", "quartz"]) {
+    if score @s ${el} matches 1.. function {
+        function fortune {
+            function give {
+                /${"give @s " + el}
+                do if (el != "quartz")
+                    xp add @s 1 points
+                else
+                    xp add @s 3 points
+            }
+            if entity @s[nbt={SelectedItem:{tag:{Enchantments:[{id:"minecraft:fortune",lvl:2s}]}}}] function /give
+            if entity @s[nbt={SelectedItem:{tag:{Enchantments:[{id:"minecraft:fortune",lvl:3s}]}}}] function /give
+        }
+        if entity @s[nbt={ActiveEffects:[{Id:31b}]}] function /fortune
+        
+        scoreboard players reset @s $el
+    }
+}
+# Антизастревание в блоке-конструкторе
+if entity @s[gamemode=!spectator] if block ~ ~ ~ structure_block align y tp ~ ~1 ~
+
+
+# Остановка наблюдателей
+if score @s spec_stun matches 1.. function {
+    if entity @s[gamemode=spectator] function {
+        if score minutes global matches ..154 tp @s 908 1000 1018
+        if score minutes global matches 155.. tp @s -1000 1000 0
+        gamemode adventure
+    }
+    if score @s spec_stun matches 1 if entity @s[gamemode=adventure] gamemode spectator
+    scoreboard players remove @s spec_stun 1
+}
+
+
+# Возврат командных монет
+for (team in teams) {
+    if entity @s[team=!${team[0]}] store result score ${team[0]+"_return"} temp clear @s cod_spawn_egg{Tags:[${new nbt(team[0]+"_coin")}]}
+    if score ${team[0]+"_return"} temp matches 1.. function {
+        summon item ~ ~ ~ {PickupDelay:20s,Tags:["countme"],Item:{id:"minecraft:cod_spawn_egg",Count:1b,tag:{Tags:[${new nbt(team[0] + "_coin")},"return"],
+                                EntityTag:{id:"minecraft:armor_stand",NoGravity:1b,Marker:1b,Invisible:1b,Silent:1b,Tags:["bag"]},display:{
+                                    Name:${new nbt(new text_component({italic:false,color:"gold",text:"Мешок монет " + team[4] + " команды"}))},
+                                    Lore:["§r§7Используйте, чтобы превратить в 6 монет"]
+                                }}}}
+        as @e[type=item,tag=countme] function {
+            store result entity @s Item.Count byte 1.0 scoreboard players get ${team[0]+"_return"} temp
+            tag @s remove countme
+        } 
+        scoreboard players reset ${team[0]+"_return"} temp
+    }
+}
+
+# Гиганский пузырёк опыта
+if entity @s[scores={use.xpbottle=1..}] function {
+    xp add @s 612 points
+    kill @e[type=experience_bottle]
+    scoreboard players reset @s use.xpbottle
+}
+
+
+# Удочка с морковью
+if entity @s[scores={use.carrot_stick=1..}] function {
+    unless entity @s[x=17,y=200,z=13,distance=..128] unless entity @s[x=-1000,y=100,z=0,distance=..256] function {
+        unless block ~ ~-1 ~ #sr:do_not_replace_by_slime function {
+            unless entity @s[nbt={SelectedItem:{id:"minecraft:carrot_on_a_stick"}}] unless entity @s[nbt={Inventory:[{Slot:-106b,id:"minecraft:carrot_on_a_stick"}]}] clear @s carrot_on_a_stick 1
+            unless entity @s[nbt={SelectedItem:{id:"minecraft:carrot_on_a_stick"}}] if entity @s[nbt={Inventory:[{Slot:-106b,id:"minecraft:carrot_on_a_stick"}]}] replaceitem entity @s weapon.offhand air
+            if entity @s[nbt={SelectedItem:{id:"minecraft:carrot_on_a_stick"}}] replaceitem entity @s weapon.mainhand air
+            setblock ~ ~-1 ~ slime_block destroy
+        }
+    }
+    scoreboard players reset @s use.carrot_stick
+}
+
+
+# Утомление при надетых элитрах
+if entity @s[nbt={Inventory:[{Slot:102b,id:"minecraft:elytra"}]}] function {
+    effect give @s mining_fatigue 99999 1 true
+    effect give @s haste 99999 0 true
+    at @s particle campfire_cosy_smoke ~ ~ ~ 0 0 0 0 1 force
+}
+
+
+# Уменьшение времени голода с кадавра
+if entity @s[tag=hunger_fix] function {
+    effect clear @s hunger
+    effect give @s hunger 8
+    tag @s remove hunger_fix
+}
+
+
+# Триггеры
+scoreboard players enable @s changelog
+scoreboard players enable @s help
+unless score @s changelog matches 0 function sr:changelog
+unless score @s help matches 0 function sr:help
+
+scoreboard players add @s spectate 0
+unless score @s spectate matches 0 function {
+    if entity @s[team=none] function {
+        gamemode spectator @s
+        tp @s 908 112 1018
+    }
+    
+    set @s -> spectate = 0
+}

@@ -1,0 +1,30 @@
+{
+    "display": {
+        "title": {
+            "text": "Инженер"
+        },
+        "description": {
+            "text": "Создайте поршень"
+        },
+        "icon": {
+            "item": "minecraft:piston"
+        },
+        "frame": "task",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": true
+    },
+    "criteria": {
+        "trigger": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:piston"
+                    }
+                ]
+            }
+        }
+    },
+    "parent": "sr:root"
+}
