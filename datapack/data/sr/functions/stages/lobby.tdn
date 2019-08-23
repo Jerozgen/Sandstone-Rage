@@ -58,6 +58,9 @@ as @a at @s function {
             } 
             scoreboard players set @s ${"join" + team[0]} 0
         }
+        raw ${"unless block " + team[7] + " birch_wall_sign"} function {
+            scoreboard players reset @s ${"join" + team[0]}
+        }
     }
     
     
@@ -114,11 +117,14 @@ as @a at @s function {
     # [Покинуть команду]
     scoreboard players enable @s leaveteam
     unless score @s leaveteam matches 0 function {
-        raw ${"if block -2 201 0 birch_wall_sign"} function {
+        if block -2 201 0 birch_wall_sign function {
             eval log(entity<@s[team=!none]>, "Вы покинули команду.")
             team join none @s
         }
         set @s -> leaveteam = 0
+    }
+    unless block -2 201 0 birch_wall_sign function {
+        scoreboard players reset @s leaveteam
     }
     
     
@@ -150,6 +156,8 @@ if score starting global matches 1.. function {
     
     if score starting global matches 200 function {
         eval start_timer(10, "секунд")
+        eval log(entity<@a>,["До начала игры ",{"text":"10","color":"gold"}," секунд."])
+        as @a at @s run playsound ui.button.click master @s
         setblock 17 200 12 air
         /${"setblock 17 200 12 birch_wall_sign" + new nbt({
             Text1:'""',
@@ -157,14 +165,13 @@ if score starting global matches 1.. function {
             Text3:'""',
             Text4:"[\"\",{\"text\":\"(\",\"color\":\"dark_gray\"},{\"keybind\":\"key.use\",\"color\":\"dark_gray\"},{\"text\":\")\",\"color\":\"dark_gray\"}]"})}
     }
-    if score starting global matches 100 function {eval start_timer(5, "секунд")}
-    if score starting global matches 80 function {eval start_timer(4, "секунды")}
-    if score starting global matches 60 function {eval start_timer(3, "секунды")}
-    if score starting global matches 40 function {eval start_timer(2, "секунды")}
-    if score starting global matches 20 function {eval start_timer(1, "секунда")}
+    if score starting global matches 100 function {eval start_timer(5)}
+    if score starting global matches 80 function {eval start_timer(4)}
+    if score starting global matches 60 function {eval start_timer(3)}
+    if score starting global matches 40 function {eval start_timer(2)}
+    if score starting global matches 20 function {eval start_timer(1)}
     
     if score starting global matches 0 function {
-        setblock 17 200 12 air
         scoreboard players reset starting global
         function sr:start
     }

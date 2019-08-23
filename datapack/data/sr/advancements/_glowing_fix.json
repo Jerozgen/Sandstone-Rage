@@ -1,12 +1,9 @@
 {
     "criteria": {
-        "husk": {
+        "spectral_arrow": {
             "trigger": "minecraft:entity_hurt_player",
             "conditions": {
                 "damage": {
-                    "dealt": {
-                        "min": 1
-                    },
                     "direct_entity": {
                         "type": "minecraft:spectral_arrow"
                     }

@@ -1,5 +1,15 @@
 @ require sr:global
 
+
+scoreboard players reset @s joinaqua
+scoreboard players reset @s joinyellow
+scoreboard players reset @s joinpurple
+scoreboard players reset @s joingreen
+scoreboard players reset @s leaveteam
+scoreboard players reset @s decline
+scoreboard players reset @s accept
+scoreboard players reset @s start
+
 # Добавление в команду во время игры
 define function join_game {
     in the_end tp @s 0 0 0
@@ -171,7 +181,7 @@ positioned ~ ~ 1018 particle damage_indicator ~ ~ ~200.75 10 10 0 0 5 normal @s
 positioned ~ ~ 1018 particle damage_indicator ~ ~ ~-200.75 10 10 0 0 5 normal @s
 positioned ~ ~ ~ particle damage_indicator ~ 255 ~ 10 0 10 0 5 normal @s
 
-if entity @s[gamemode=!spectator] unless score @s spec_stun matches 1.. function {
+if entity @s[gamemode=!spectator] unless score @s spec_stun matches 1.. unless score @s respawning matches 1.. function {
     # Границы
     unless entity @s[x=708,y=-200,z=818,dx=400,dy=455,dz=400] unless entity @s[x=17,y=200,z=13,distance=..128] unless entity @s[x=-1000,y=100,z=0,distance=..256] function {
         title @s times 0 2 6
@@ -302,17 +312,19 @@ if score @s death matches 1.. function {
 if score @s respawning matches 1.. function {
     tp @s 908 1000 1018
     effect give @s blindness 2 0 true
-    effect give @s levitation 2 255 true
+    effect give @s weakness 2 9 true
+    effect give @s invisibility 2 0 true
     scoreboard players remove @s respawning 1
     scoreboard players operation respawning_time temp = @s respawning
-    scoreboard players operation respawning_time temp %= 20 const
+    scoreboard players operation respawning_time temp /= 20 const
     title @s times 0 2 3
     title @s subtitle "ВОЗРОЖДЕНИЕ"
-    title @a title {"score":{"objective":"temp","name":"respawning_time"},"color":"yellow"}
+    title @s title {"score":{"objective":"temp","name":"respawning_time"},"color":"yellow"}
     if score @s respawning matches 0 function {
         set @s -> time_since_death = 1
         effect clear @s blindness
-        effect clear @s levitation
+        effect clear @s weakness
+        effect clear @s invisibility
         for (team in teams) {
             if entity @s[team=${team[0]}] /${"tp @s " + team[6] + " " + team[13]+ " 0"}
         }
@@ -322,6 +334,9 @@ if score @s respawning matches 1.. function {
 # Возрождение
 if entity @s[team=!none] unless score @s respawning matches 1.. if entity @s[gamemode=!spectator] function {
     if score @s time_since_death matches 1 function {
+        for (team in teams) {
+            if entity @s[team=${team[0]}] /${"tp @s " + team[6] + " " + team[13]+ " 0"}
+        }
         replaceitem entity @s armor.head conduit{
             Unbreakable:1b,
             display:{Name:"{\"text\":\"Защита от отталкивания\",\"italic\":false}"},
@@ -335,10 +350,12 @@ if entity @s[team=!none] unless score @s respawning matches 1.. if entity @s[gam
         particle witch ~ ~.85 ~ 0 0.6 0 0.1 1
     if score @s time_since_death matches 101 function {
         for (team in teams) {
-            if entity @s[team=${team[0]}]
-                /${"tp @s " + team[6] + " " + team[13]+ " 0"}
-            if entity @s[team=${team[0]}] if score ${team[1]} Nexus matches 0
-                replaceitem entity @s armor.head chainmail_helmet{Enchantments:[{id:"minecraft:vanishing_curse",lvl:1s}],Unbreakable:1b}
+            if entity @s[team=${team[0]}] function {
+                if score ${team[1]} Nexus matches 0
+                    replaceitem entity @s armor.head chainmail_helmet{Enchantments:[{id:"minecraft:vanishing_curse",lvl:1s}],Unbreakable:1b}
+                unless score ${team[1]} Nexus matches 0
+                    replaceitem entity @s armor.head air
+            }
         }
     }
 }

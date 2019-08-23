@@ -4,7 +4,7 @@
             "text": "Пожилая черепаха"
         },
         "description": {
-            "text": "Выстрелите в кого-нибудь стрелой черепашьей мощи"
+            "text": "Выстрелите в кого-нибудь стрелой замедления"
         },
         "icon": {
             "item": "minecraft:turtle_spawn_egg"
@@ -23,7 +23,7 @@
                         "is_projectile": true,
                         "direct_entity": {
                             "type": "minecraft:arrow",
-                            "nbt": "{Potion:\"minecraft:long_turtle_master\"}"
+                            "nbt": "{Potion:\"minecraft:strong_slowness\"}"
                         }
                     }
                 }

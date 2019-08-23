@@ -153,12 +153,14 @@ if entity @s[tag=hunger_fix] function {
     effect clear @s hunger
     effect give @s hunger 8
     tag @s remove hunger_fix
+    advancement revoke @s only sr:_hunger_fix
 }
 
 # Удаление эффекта со спектральной стрелы
-if entity @s[tag=hunger_fix] function {
+if entity @s[tag=glowing_fix] function {
     effect clear @s glowing
     tag @s remove glowing_fix
+    advancement revoke @s only sr:_glowing_fix
 }
 
 # Триггеры

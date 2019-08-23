@@ -85,8 +85,10 @@ var log = function (receiver, msg) {
     tellraw $receiver ${new text_component(["[Sandstone ",{"text":"Rage","bold":true,"color":"gold"},"] ",msg])}
 }
 
-var start_timer = function (seconds, text) {
-    eval log(entity<@a>,["До начала игры ",{"text":(string) seconds,"color":"gold"}," ", text, "."])
+var start_timer = function (seconds) {
+    title @s times 0 25 10
+    title @s title {"text":${(string) seconds},"color":"gold"}
+    title @s subtitle "ИГРА НАЧИНАЕТСЯ"
     as @a at @s run playsound ui.button.click master @s
 }
 

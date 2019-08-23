@@ -282,37 +282,6 @@
                         "count": 2
                     }
                 ]
-            },
-            {
-                "buy": {
-                    "item": "tnt",
-                    "count": 1
-                },
-                "cost": [
-                    {
-                        "item": "sunflower",
-                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
-                        "count": 1
-                    }
-                ]
-            },
-            {
-                "buy": {
-                    "item": "blaze_spawn_egg",
-                    "tag":"{EntityTag:{id:\"minecraft:area_effect_cloud\",Duration:-1,Age:-2147483648,WaitTime:-2147483648,Radius:0.0f,Tags:[\"mine\"]},display:{Name:\"[{\\\"text\\\":\\\"Мина\\\",\\\"italic\\\":false,\\\"color\\\":\\\"yellow\\\"},{\\\"translate\\\":\\\" (%s)\\\",\\\"color\\\":\\\"gray\\\",\\\"italic\\\":false,\\\"with\\\":[{\\\"keybind\\\":\\\"key.use\\\"}]}]\",Lore:['\"§r§7Спустя §b5 секунд§7 устанавливает §eвесовую\"','\"§r§eпластину§7, взрывающуюся при изменении веса\"','\"§r§7или разрушении блока после её активации.\"']}}",
-                    "count": 1
-                },
-                "cost": [
-                    {
-                        "item": "sunflower",
-                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
-                        "count": 1
-                    },
-                    {
-                        "item": "tnt",
-                        "count": 1
-                    }
-                ]
             }
         ]
     },
@@ -366,6 +335,70 @@
             },
             {
                 "buy": {
+                    "item": "tnt",
+                    "count": 2
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "blaze_spawn_egg",
+                    "tag":"{EntityTag:{id:\"minecraft:area_effect_cloud\",Duration:-1,Age:-2147483648,WaitTime:-2147483648,Radius:0.0f,Tags:[\"mine\"]},display:{Name:\"[{\\\"text\\\":\\\"Мина\\\",\\\"italic\\\":false,\\\"color\\\":\\\"yellow\\\"},{\\\"translate\\\":\\\" (%s)\\\",\\\"color\\\":\\\"gray\\\",\\\"italic\\\":false,\\\"with\\\":[{\\\"keybind\\\":\\\"key.use\\\"}]}]\",Lore:['\"§r§7Спустя §b5 секунд§7 устанавливает §eвесовую\"','\"§r§eпластину§7, взрывающуюся при изменении веса\"','\"§r§7или разрушении блока после её активации.\"']}}",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    },
+                    {
+                        "item": "tnt",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "heart_of_the_sea",
+                    "tag": "{display:{Name:'{\"text\":\"Сфера хаоса\",\"italic\":false,\"color\":\"yellow\"}',Lore:['\"§r§7После попадания в бездну вызывает\"','\"§r§bгрозовую погоду§7 на §b1,5§7 минуты. После\"','\"§r§7окончания грозы в бедроки централь-\"','\"§r§7ного острова §b3§7 раза ударяет молния.\"']}}",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 4
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "villagers": [
+            {
+                "id":"enchanting",
+                "type": "desert",
+                "profession": "librarian",
+                "name":{"text":"Чародейство"},
+                "positions": [
+                    [853.5, 86, 986, 180],
+                    [940, 86, 963.5, -90],
+                    [962.5, 86, 1050, 0],
+                    [876, 86, 1072.5, 90],
+                    [37, 205, 29.5, -90]
+                ]
+            }
+        ],
+        "trades":[
+            {
+                "buy": {
                     "item": "enchanting_table",
                     "count": 1
                 },
@@ -414,20 +447,6 @@
                         "item": "sunflower",
                         "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
                         "count": 1
-                    }
-                ]
-            },
-            {
-                "buy": {
-                    "item": "heart_of_the_sea",
-                    "tag": "{display:{Name:'{\"text\":\"Сфера хаоса\",\"italic\":false,\"color\":\"yellow\"}',Lore:['\"§r§7После попадания в бездну вызывает\"','\"§r§bгрозовую погоду§7 на §b1,5§7 минуты. После\"','\"§r§7окончания грозы в бедроки централь-\"','\"§r§7ного острова §b3§7 раза ударяет молния.\"']}}",
-                    "count": 1
-                },
-                "cost": [
-                    {
-                        "item": "sunflower",
-                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
-                        "count": 4
                     }
                 ]
             }
