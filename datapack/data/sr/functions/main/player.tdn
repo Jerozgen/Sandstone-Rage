@@ -39,16 +39,16 @@ if entity @s[scores={unluck=1..}] function {
         scoreboard players operation @e[tag=fireball_spawner,tag=spawner,tag=!init,limit=1] dz -= z temp
         tag @e[tag=fireball_spawner,tag=spawner] add init
         
-        summon area_effect_cloud ^ ^ ^1.3 {Tags:["fireball_spawner","flame"],Duration:51}
-        summon area_effect_cloud ^ ^ ^1.8 {Tags:["fireball_spawner","flame"],Duration:52}
-        summon area_effect_cloud ^ ^ ^2.3 {Tags:["fireball_spawner","flame"],Duration:53}
-        summon area_effect_cloud ^ ^ ^2.8 {Tags:["fireball_spawner","flame"],Duration:54}
-        summon area_effect_cloud ^ ^ ^3.3 {Tags:["fireball_spawner","flame"],Duration:55}
-        summon area_effect_cloud ^ ^ ^3.8 {Tags:["fireball_spawner","flame"],Duration:56}
-        summon area_effect_cloud ^ ^ ^4.3 {Tags:["fireball_spawner","flame"],Duration:57}
-        summon area_effect_cloud ^ ^ ^4.8 {Tags:["fireball_spawner","flame"],Duration:58}
-        summon area_effect_cloud ^ ^ ^5.3 {Tags:["fireball_spawner","flame"],Duration:59}
-        summon area_effect_cloud ^ ^ ^5.8 {Tags:["fireball_spawner","flame"],Duration:60}
+        summon area_effect_cloud ^ ^ ^1.3 {Tags:["fireball_spawner","flame"],Duration:41}
+        summon area_effect_cloud ^ ^ ^1.8 {Tags:["fireball_spawner","flame"],Duration:42}
+        summon area_effect_cloud ^ ^ ^2.3 {Tags:["fireball_spawner","flame"],Duration:43}
+        summon area_effect_cloud ^ ^ ^2.8 {Tags:["fireball_spawner","flame"],Duration:44}
+        summon area_effect_cloud ^ ^ ^3.3 {Tags:["fireball_spawner","flame"],Duration:45}
+        summon area_effect_cloud ^ ^ ^3.8 {Tags:["fireball_spawner","flame"],Duration:46}
+        summon area_effect_cloud ^ ^ ^4.3 {Tags:["fireball_spawner","flame"],Duration:47}
+        summon area_effect_cloud ^ ^ ^4.8 {Tags:["fireball_spawner","flame"],Duration:48}
+        summon area_effect_cloud ^ ^ ^5.3 {Tags:["fireball_spawner","flame"],Duration:49}
+        summon area_effect_cloud ^ ^ ^5.8 {Tags:["fireball_spawner","flame"],Duration:50}
     }
 }
 
@@ -127,11 +127,24 @@ if entity @s[scores={use.carrot_stick=1..}] function {
 }
 
 
-# Утомление при надетых элитрах
+# Элитры
 if entity @s[nbt={Inventory:[{Slot:102b,id:"minecraft:elytra"}]}] function {
     effect give @s mining_fatigue 99999 1 true
     effect give @s haste 99999 0 true
-    at @s particle campfire_cosy_smoke ~ ~ ~ 0 0 0 0 1 force
+    if score @s aviate matches 1.. function {
+        at @s particle campfire_cosy_smoke ~ ~ ~ 0 0 0 0 1 force
+        if entity @s[x=-3,y=203,z=0,distance=..5] function {
+            for (team in teams) {
+                raw ${"if entity @s" + team[8].replace("nbt={OnGround:1b},","")} function {
+                    eval log(entity<@a[team=${team[0]}]>,[{selector:"@s"},{text:" покинул ожидание принятия в команду."}])
+                    eval log(entity<@s>,"Вы покинули ожидание принятия в команду.")
+                }
+            }
+            tp @s 0 200 0
+            scoreboard players reset @s leavewaiting
+        }
+        scoreboard players reset @s aviate
+    }
 }
 
 
@@ -142,12 +155,27 @@ if entity @s[tag=hunger_fix] function {
     tag @s remove hunger_fix
 }
 
+# Удаление эффекта со спектральной стрелы
+if entity @s[tag=hunger_fix] function {
+    effect clear @s glowing
+    tag @s remove glowing_fix
+}
 
 # Триггеры
 scoreboard players enable @s changelog
 scoreboard players enable @s help
+scoreboard players enable @s authors
+scoreboard players enable @s testers
 unless score @s changelog matches 0 function sr:changelog
 unless score @s help matches 0 function sr:help
+unless score @s authors matches 0 function {
+    tellraw @s ["",{"text":"   ------ [Sandstone "},{"text":"Rage","bold":true,"color":"gold"},{"text":"] ------\n\n"},{"text":"     \u041a\u043e\u0434:","color":"gold"},{"text":" Jerozgen\n"},{"text":"     \u041f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438:","color":"gold"},{"text":" Kon4ita\n\n"},{"text":"     \u0421\u043e\u0432\u0435\u0442\u044b:","color":"gold"},{"text":" CorbinADtor\n"},{"text":"     \u041f\u043e\u043c\u043e\u0449\u044c \u0432 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043aах:","color":"gold"},{"text":" \n       Sancho_tEm\n       StuART_Original\n"},{"text":"     Ранний код:","color":"gold"},{"text":" GreenL1nk\n"},{"text":"     Ранние постройки:","color":"gold"},{"text":" \n       luka4er\n       VilkinOff\n"},{"text":"     \u0422\u0435\u0441\u0442\u0435\u0440\u044b:","color":"gold"},{"text":"\n       "},{"text":"[\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0441\u043f\u0438\u0441\u043e\u043a]","color":"green","clickEvent":{"action":"run_command","value":"/trigger testers"}},{"text":"\n\n   ----------------------------"}]
+    set @s -> authors = 0
+}
+unless score @s testers matches 0 function {
+    tellraw @s ["",{"text":"   ------ [Sandstone "},{"text":"Rage","bold":true,"color":"gold"},{"text":"] ------\n\n"},{"text":"     \u0422\u0435\u0441\u0442\u0435\u0440\u044b:","color":"gold"},{"text":" \n       12kravasanch1k12\n       __Tord_Larsson__\n       _Bloody_1337\n       _FireFiro_\n       _Timchik_\n       _Xeks_\n       _Zip_Bro_\n       "},{"text":"A","color":"dark_aqua"},{"text":"DequateZ\n       AkenoSenxpi_\n       Alexsandriya\n       AliciaLP\n       AnzhelinaYT\n       "},{"text":"B","color":"dark_aqua"},{"text":"1rdynyannyan\n       BlackStar_YT\n       BoomFoxx\n       BrandShei\n       "},{"text":"c","color":"dark_aqua"},{"text":"atastrophe122\n       "},{"text":"D","color":"dark_aqua"},{"text":"evastational\n       DiaLight\n       Dim0N\n       DJkiller\n       DobruyChelove4ek\n       DSempai\n       "},{"text":"E","color":"dark_aqua"},{"text":"l7\n       Epic_Addy\n       ewoka20\n       "},{"text":"F","color":"dark_aqua"},{"text":"ake_Zomb1e\n       Fedoras_\n       Fiarcherry\n       Freddyt98\n       "},{"text":"G","color":"dark_aqua"},{"text":"oldenGuppies\n       Grim0shi\n       "},{"text":"H","color":"dark_aqua"},{"text":"1kka\n       Hemok98\n       Husplace\n       "},{"text":"I","color":"dark_aqua"},{"text":"amPebble\n       IamWorldPad\n       ItsRosey\n       iUnlegit\n       "},{"text":"j","color":"dark_aqua"},{"text":"bcurtis\n       JeeANiiT\n       JekaRUS\n       JorniKek\n       JustEmpty05\n       "},{"text":"K","color":"dark_aqua"},{"text":"azuhira_Fogg\n       KennyDC\n       Ksant\n       "},{"text":"L","color":"dark_aqua"},{"text":"oBoKryaK\n       Lullolia\n       "},{"text":"M","color":"dark_aqua"},{"text":"aksimyss\n       Makso4iks\n       ManuelGo2\n       MarcMc\n       Maxx0520\n       megabalker\n       MHGjj4win\n       MrDingos\n       MrHixuu\n       MrLegolas\n       "},{"text":"n","color":"dark_aqua"},{"text":"annis123\n       Nastya_VeterokYT\n       Neaton_01\n       Nicralet52RUS\n       NlKO45\n       no_op_guy\n       "},{"text":"O","color":"dark_aqua"},{"text":"nurAlpaslan1\n       "},{"text":"P","color":"dark_aqua"},{"text":"ersonalfebus\n       PondikPanda\n       "},{"text":"Q","color":"dark_aqua"},{"text":"BER_0\n       Qwerty_GG\n       "},{"text":"r","color":"dark_aqua"},{"text":"odabdel\n       rutek283\n       "},{"text":"S","color":"dark_aqua"},{"text":"irboys\n       SnigleN\n       "},{"text":"T","color":"dark_aqua"},{"text":"eapal\n       The_Noobscoper\n       Thonic\n       "},{"text":"V","color":"dark_aqua"},{"text":"adem08\n       varga1989\n       "},{"text":"x","color":"dark_aqua"},{"text":"KILADx\n\n   ----------------------------"}]
+    set @s -> testers = 0
+}
 
 scoreboard players add @s spectate 0
 unless score @s spectate matches 0 function {

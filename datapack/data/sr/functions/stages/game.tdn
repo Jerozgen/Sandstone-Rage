@@ -311,12 +311,12 @@ for (team in teams) {
                     }
                     
                     eval log(entity<@a>, ["Ядро команды ",{text:team[5],color:team[2]}," разрушено."])
-                    eval log(entity<@a[team=${team[0]}]>, ["За потерю ядра команда получила по 6 монет на каждого участника, ускорение, алмазные ботинки и +",{"score":{objective:"temp",name:"extra_lives"}},{text:"❤",color:team[2]}," за оставшиеся ядра."])
+                    eval log(entity<@a[team=${team[0]}]>, ["За потерю ядра команда получила по 6 монет на каждого участника, ускорение, койф и +",{"score":{objective:"temp",name:"extra_lives"}},{text:"❤",color:team[2]}," за оставшиеся ядра."])
                     
                     scoreboard players operation ${team[1]} extra_lives += extra_lives temp
                     as @a[team=${team[0]}] function {
-                        if data entity @s Inventory[{Slot:100b}] give @s diamond_boots{Enchantments:[{id:"minecraft:vanishing_curse",lvl:1s},{id:"minecraft:protection",lvl:4s}],Unbreakable:1b}
-                        unless data entity @s Inventory[{Slot:100b}] replaceitem entity @s armor.feet diamond_boots{Enchantments:[{id:"minecraft:vanishing_curse",lvl:1s},{id:"minecraft:protection",lvl:4s}],Unbreakable:1b}
+                        if data entity @s Inventory[{Slot:103b}] give @s chainmail_helmet{Enchantments:[{id:"minecraft:vanishing_curse",lvl:1s}],Unbreakable:1b}
+                        unless data entity @s Inventory[{Slot:103b}] replaceitem entity @s armor.head chainmail_helmet{Enchantments:[{id:"minecraft:vanishing_curse",lvl:1s}],Unbreakable:1b}
                     }
                     
                     if score minutes global matches ..139 function $extra_lives_resource

@@ -204,8 +204,12 @@ scoreboard players enable @a spectate
 
 # Золотое яблоко
 if score @s use.sgapple matches 1.. function {
-    effect give @s glowing 20 0 false
+    scoreboard players set @s glowing 380
     scoreboard players reset @s use.sgapple
+}
+if score @s glowing matches 1.. function {
+    scoreboard players remove @s glowing 1
+    effect give @s glowing 1 0 false
 }
 
 
@@ -316,31 +320,25 @@ if score @s respawning matches 1.. function {
 }
 
 # Возрождение
-if entity @s[team=!none] function {
-    if score @s time_since_death matches 1 unless score @s respawning matches 1.. function {
+if entity @s[team=!none] unless score @s respawning matches 1.. if entity @s[gamemode=!spectator] function {
+    if score @s time_since_death matches 1 function {
+        replaceitem entity @s armor.head conduit{
+            Unbreakable:1b,
+            display:{Name:"{\"text\":\"Защита от отталкивания\",\"italic\":false}"},
+            Enchantments:[
+                {id:"minecraft:vanishing_curse",lvl:1s},
+                {id:"minecraft:binding_curse",lvl:1s}],
+            AttributeModifiers:[{AttributeName:"generic.knockbackResistance",Name:"generic.knockbackResistance",Slot:"head",Amount:1d,Operation:0,UUIDMost:44017l,UUIDLeast:149652l}]}
+        effect give @s resistance 5 9
+    }
+    if score @s time_since_death matches 1..101 
+        particle witch ~ ~.85 ~ 0 0.6 0 0.1 1
+    if score @s time_since_death matches 101 function {
         for (team in teams) {
             if entity @s[team=${team[0]}]
                 /${"tp @s " + team[6] + " " + team[13]+ " 0"}
             if entity @s[team=${team[0]}] if score ${team[1]} Nexus matches 0
-                replaceitem entity @s armor.feet diamond_boots{
-                    Enchantments:[
-                        {id:"minecraft:vanishing_curse",lvl:1s},
-                        {id:"minecraft:protection",lvl:4s}],
-                    Unbreakable:1b}
-        }
-        if entity @s[gamemode=!spectator] function {
-            replaceitem entity @s armor.head conduit{
-                Unbreakable:1b,
-                display:{Name:"{\"text\":\"Защита от отталкивания\",\"italic\":false}"},
-                Enchantments:[
-                    {id:"minecraft:vanishing_curse",lvl:1s},
-                    {id:"minecraft:binding_curse",lvl:1s}],
-                AttributeModifiers:[{AttributeName:"generic.knockbackResistance",Name:"generic.knockbackResistance",Slot:"head",Amount:1d,Operation:0,UUIDMost:44017l,UUIDLeast:149652l}]}
-            effect give @s resistance 5 9
+                replaceitem entity @s armor.head chainmail_helmet{Enchantments:[{id:"minecraft:vanishing_curse",lvl:1s}],Unbreakable:1b}
         }
     }
-    if score @s time_since_death matches 1..101
-        particle witch ~ ~.85 ~ 0 0.6 0 0.1 1
-    if score @s time_since_death matches 101
-        replaceitem entity @s armor.head air
 }

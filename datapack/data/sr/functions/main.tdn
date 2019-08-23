@@ -14,6 +14,7 @@ define function tick {
     # None team
     team join none @a[team=]
     spawnpoint @a[team=none] 0 200 0
+    recipe give @a *
     
     # Генераторы
     eval block_generator("oak", block<dark_oak_log>, 50)
@@ -57,7 +58,8 @@ define function tick {
     as @e[x=17,y=200,z=13,distance=..128] function {
         if entity @s[type=player] at @s function {
             if entity @s[y=191,dy=-20] tp @s 0 200 0
-            if entity @s[x=7,y=203,z=-17,dx=0,dy=3,dz=0] tp @s 17 219 73
+            if entity @s[x=7,y=203,z=-17,dx=0,dy=3,dz=0] tp @s ~10 ~16 ~90
+            if entity @s[x=38,y=206,z=33,dx=0,dy=3,dz=0] tp @s ~-21 ~4 ~-47
             
             effect give @s weakness 3 10 true
             effect give @s resistance 3 10 true
@@ -66,12 +68,20 @@ define function tick {
             effect clear @s jump_boost
             effect give @s jump_boost 3 255 true
             effect clear @s wither 
+            
+            stopsound @s * block.bell.use
         }
         if entity @s[tag=credit] at @s function {
-            unless entity @a[gamemode=!spectator,distance=..8] facing 17 199 13 tp @s ~ ~ ~ ~ ~
+            data remove entity @s Motion
+            unless entity @a[gamemode=!spectator,distance=..8] tp @s ~ ~ ~ -90 0
             if entity @a[gamemode=!spectator,distance=..8] facing entity @p[gamemode=!spectator,distance=..8] feet tp @s ^ ^ ^ ~ ~
         }
+        if entity @s[tag=chainmail] at @s function {
+            unless entity @a[gamemode=!spectator,distance=..5] tp @s ~ ~ ~ 45 0
+            if entity @a[gamemode=!spectator,distance=..5] facing entity @p[gamemode=!spectator,distance=..5] feet tp @s ^ ^ ^ ~ ~
+        }
         if entity @s[tag=fortune_pickaxe] data merge entity @s {HandItems:[{id:"iron_pickaxe",tag:{
+                display:{Name:'{"text":"Кирка с «Удачей III»","italic":false}'},
                 Unbreakable:1b,
                 HideFlags:4,
                 CanDestroy:[
@@ -83,16 +93,60 @@ define function tick {
                 ],Enchantments:[{id:"minecraft:fortune",lvl:3s}]},
                 Count:1b
             },{}]}
+        if entity @s[tag=fortune2_pickaxe] data merge entity @s {HandItems:[{id:"iron_pickaxe",tag:{
+                display:{Name:'{"text":"Кирка с «Удачей II»","italic":false}'},
+                Unbreakable:1b,
+                HideFlags:4,
+                CanDestroy:[
+                    "minecraft:gold_ore",
+                    "minecraft:iron_ore",
+                    "minecraft:nether_quartz_ore",
+                    "minecraft:diamond_ore",
+                    "minecraft:light_weighted_pressure_plate"
+                ],Enchantments:[{id:"minecraft:fortune",lvl:2s}]},
+                Count:1b
+            },{}]}
+        if entity @s[tag=silk_pickaxe] data merge entity @s {HandItems:[{id:"iron_pickaxe",tag:{
+                display:{Name:'{"text":"Кирка с «Шёлковым касанием»","italic":false}'},
+                Unbreakable:1b,
+                HideFlags:4,
+                CanDestroy:[
+                    "minecraft:gold_ore",
+                    "minecraft:iron_ore",
+                    "minecraft:nether_quartz_ore",
+                    "minecraft:diamond_ore",
+                    "minecraft:light_weighted_pressure_plate"
+                ],Enchantments:[{id:"minecraft:silk_touch",lvl:1s}]},
+                Count:1b
+            },{}]}
         
         kill @s[type=arrow,tag=!immune]
         kill @s[type=spectral_arrow,tag=!immune]
         kill @s[type=firework_rocket]
+        kill @s[type=boat]
+        kill @s[type=ender_pearl]
         if entity @s[type=trident] at @s function {
             summon item {Tags:["trident_return"],Item:{id:"trident",Count:1b}}
             set @e[tag=trident_return,distance=..0.5,limit=1].Item = @s.Trident
             kill @s
         }
-        data merge entity @s[type=item,nbt={Item:{id:"minecraft:diamond"}}] {PickupDelay:100s}
+    }
+    positioned 17 209 -14 unless block ~ ~ ~ diamond_ore function {
+        setblock ~ ~ ~ diamond_ore
+        kill @e[type=item,distance=..0.5]
+        kill @e[type=experience_orb,distance=..0.5]
+        as @a[scores={mine_diamond_ore=1..},distance=..10] function {
+            var give_diamonds = resource</give_diamonds>
+            function give_diamonds {
+                give @s diamond
+                xp add @s 5 points
+            }
+            if entity @s[nbt={SelectedItem:{tag:{Enchantments:[{id:"minecraft:fortune",lvl:2s}]}}}] function $give_diamonds
+            if entity @s[nbt={SelectedItem:{tag:{Enchantments:[{id:"minecraft:fortune",lvl:3s}]}}}] function {
+                function $give_diamonds
+                function $give_diamonds
+            }
+        }
     }
     
     
@@ -316,6 +370,4 @@ define function tick {
     setblock 19 200 12 potted_dead_bush
     setblock 19 201 -13 potted_acacia_sapling
     setblock 18 201 -3 potted_blue_orchid
-    
-    setblock 17 209 -14 diamond_ore
 }

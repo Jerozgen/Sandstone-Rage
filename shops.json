@@ -46,24 +46,11 @@
                 "buy": {
                     "item": "sunflower",
                     "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
-                    "count": 2
+                    "count": 1
                 },
                 "cost": [
                     {
                         "item":"diamond",
-                        "count": 3
-                    }
-                ]
-            },
-            {
-                "buy": {
-                    "item": "lapis_lazuli",
-                    "count": 5
-                },
-                "cost": [
-                    {
-                        "item": "sunflower",
-                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
                         "count": 1
                     }
                 ]
@@ -103,6 +90,18 @@
                     {
                         "item": "sunflower",
                         "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "stone",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "cobblestone",
                         "count": 1
                     }
                 ]
@@ -407,6 +406,19 @@
             },
             {
                 "buy": {
+                    "item": "lapis_lazuli",
+                    "count": 5
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
                     "item": "heart_of_the_sea",
                     "tag": "{display:{Name:'{\"text\":\"Сфера хаоса\",\"italic\":false,\"color\":\"yellow\"}',Lore:['\"§r§7После попадания в бездну вызывает\"','\"§r§bгрозовую погоду§7 на §b1,5§7 минуты. После\"','\"§r§7окончания грозы в бедроки централь-\"','\"§r§7ного острова §b3§7 раза ударяет молния.\"']}}",
                     "count": 1
@@ -532,7 +544,7 @@
             {
                 "buy": {
                     "item": "elytra",
-                    "tag": "{display:{Lore:['{\"translate\":\"enchantment.minecraft.binding_curse\",\"color\":\"red\",\"italic\":false}','\"\"','{\"translate\":\"item.modifiers.chest\",\"color\":\"gray\",\"italic\":false}','{\"text\":\"  Cлед частиц\",\"color\":\"white\",\"italic\":false}','[{\"text\":\"  \",\"color\":\"red\",\"italic\":false},{\"translate\":\"effect.minecraft.mining_fatigue\"},\" II\"]','[{\"text\":\"  \",\"color\":\"blue\",\"italic\":false},{\"translate\":\"effect.minecraft.haste\"}]']}}",
+                    "tag": "{Enchantments:[{id:binding_curse,lvl:1s}],display:{Lore:['\"\"','{\"translate\":\"item.modifiers.chest\",\"color\":\"gray\",\"italic\":false}','{\"text\":\"  Cлед частиц\",\"color\":\"white\",\"italic\":false}','[{\"text\":\"  \",\"color\":\"red\",\"italic\":false},{\"translate\":\"effect.minecraft.mining_fatigue\"},\" II\"]','[{\"text\":\"  \",\"color\":\"blue\",\"italic\":false},{\"translate\":\"effect.minecraft.haste\"}]']}}",
                     "count": 1
                 },
                 "cost": [
@@ -558,7 +570,7 @@
                     {
                         "item": "sunflower",
                         "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
-                        "count": 7
+                        "count": 6
                     }
                 ]
             },
@@ -574,10 +586,6 @@
                         "item": "sunflower",
                         "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
                         "count": 10
-                    },
-                    {
-                        "item":"diamond",
-                        "count": 1
                     }
                 ]
             }

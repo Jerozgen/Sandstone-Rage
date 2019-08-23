@@ -10,6 +10,8 @@ define objective leaveteam trigger "Покинуть команду"
 define objective leavewaiting trigger "Покинуть ожидание"
 define objective spectate trigger "Наблюдать"
 define objective help trigger "Справка"
+define objective authors trigger "Список авторов"
+define objective testers trigger "Список тестеров"
 define objective global
 define objective temp
 define objective const
@@ -55,6 +57,8 @@ define objective stat.sgapple used:enchanted_golden_apple {"text":"Зачар. �
 define objective use.sgapple used:enchanted_golden_apple
 define objective use.xpbottle used:experience_bottle
 define objective respawning
+define objective glowing
+define objective aviate custom:aviate_one_cm
 
 define function const {
     @ tag load
