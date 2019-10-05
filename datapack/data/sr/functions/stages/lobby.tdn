@@ -155,7 +155,6 @@ if score starting global matches 1.. function {
     scoreboard players remove starting global 1
     
     if score starting global matches 200 function {
-        eval start_timer(10, "секунд")
         eval log(entity<@a>,["До начала игры ",{"text":"10","color":"gold"}," секунд."])
         as @a at @s run playsound ui.button.click master @s
         setblock 17 200 12 air
@@ -177,3 +176,6 @@ if score starting global matches 1.. function {
     }
 
 }
+
+setblock 15 200 12 potted_cactus
+setblock 19 200 12 potted_dead_bush

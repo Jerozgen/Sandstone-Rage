@@ -69,7 +69,7 @@ define function tick {
             effect give @s jump_boost 3 255 true
             effect clear @s wither 
             
-            stopsound @s * block.bell.use
+            /stopsound @s * block.bell.use
         }
         if entity @s[tag=credit] at @s function {
             data remove entity @s Motion
@@ -169,6 +169,8 @@ define function tick {
         kill @e[type=experience_orb,distance=..0.5]
     }
     
+    # Снятие свечения с сущностей
+    effect clear @e[type=!player] glowing
     
     # Мина
     as @e[tag=mine] at @s function {
@@ -354,7 +356,6 @@ define function tick {
     setblock 32 201 12 potted_cactus
     setblock 14 201 27 potted_cactus
     setblock 25 203 -8 potted_cactus
-    setblock 15 200 12 potted_cactus
     setblock 36 206 30 potted_cactus
     setblock 15 204 23 potted_dead_bush
     setblock -3 202 24 potted_dead_bush
@@ -367,7 +368,6 @@ define function tick {
     setblock -4 197 78 potted_dead_bush
     setblock 22 197 94 potted_dead_bush
     setblock 38 197 68 potted_dead_bush
-    setblock 19 200 12 potted_dead_bush
     setblock 19 201 -13 potted_acacia_sapling
     setblock 18 201 -3 potted_blue_orchid
 }

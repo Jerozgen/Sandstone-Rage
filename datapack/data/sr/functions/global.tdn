@@ -59,6 +59,7 @@ define objective use.xpbottle used:experience_bottle
 define objective respawning
 define objective glowing
 define objective aviate custom:aviate_one_cm
+define objective damage_taken custom:damage_taken
 
 define function const {
     @ tag load
@@ -86,9 +87,9 @@ var log = function (receiver, msg) {
 }
 
 var start_timer = function (seconds) {
-    title @s times 0 25 10
-    title @s title {"text":${(string) seconds},"color":"gold"}
-    title @s subtitle "ИГРА НАЧИНАЕТСЯ"
+    title @a times 0 25 10
+    title @a title {"text":${(string) seconds},"color":"gold"}
+    title @a subtitle "ИГРА НАЧИНАЕТСЯ"
     as @a at @s run playsound ui.button.click master @s
 }
 

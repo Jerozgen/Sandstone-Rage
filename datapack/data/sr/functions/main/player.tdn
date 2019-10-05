@@ -56,18 +56,15 @@ if entity @s[scores={unluck=1..}] function {
 # Автоплавка
 for (el in ["iron_ingot", "gold_ingot", "quartz"]) {
     if score @s ${el} matches 1.. function {
-        function fortune {
-            function give {
-                /${"give @s " + el}
-                do if (el != "quartz")
-                    xp add @s 1 points
-                else
-                    xp add @s 3 points
-            }
-            if entity @s[nbt={SelectedItem:{tag:{Enchantments:[{id:"minecraft:fortune",lvl:2s}]}}}] function /give
-            if entity @s[nbt={SelectedItem:{tag:{Enchantments:[{id:"minecraft:fortune",lvl:3s}]}}}] function /give
+        function give {
+            /${"give @s " + el}
+            do if (el != "quartz")
+                xp add @s 1 points
+            else
+                xp add @s 3 points
         }
-        if entity @s[nbt={ActiveEffects:[{Id:31b}]}] function /fortune
+        if entity @s[nbt={SelectedItem:{tag:{Enchantments:[{id:"minecraft:fortune",lvl:2s}]}}}] function /give
+        if entity @s[nbt={SelectedItem:{tag:{Enchantments:[{id:"minecraft:fortune",lvl:3s}]}}}] function /give
         
         scoreboard players reset @s $el
     }
@@ -129,8 +126,6 @@ if entity @s[scores={use.carrot_stick=1..}] function {
 
 # Элитры
 if entity @s[nbt={Inventory:[{Slot:102b,id:"minecraft:elytra"}]}] function {
-    effect give @s mining_fatigue 99999 1 true
-    effect give @s haste 99999 0 true
     if score @s aviate matches 1.. function {
         at @s particle campfire_cosy_smoke ~ ~ ~ 0 0 0 0 1 force
         if entity @s[x=-3,y=203,z=0,distance=..5] function {
@@ -145,7 +140,11 @@ if entity @s[nbt={Inventory:[{Slot:102b,id:"minecraft:elytra"}]}] function {
         }
         scoreboard players reset @s aviate
     }
+    if score @s damage_taken matches 1.. function {
+        kill @s
+    }
 }
+scoreboard players reset @s damage_taken
 
 
 # Уменьшение времени голода с кадавра
