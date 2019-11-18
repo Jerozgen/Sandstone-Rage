@@ -58,6 +58,9 @@ for (team in teams) {
                 as @a[team=${team[0]}] at @s playsound item.shield.block block @s ~ ~ ~ 1 0
                 playsound entity.elder_guardian.hurt block @a ~ ~ ~ 1 0
                 title @a[team=${team[0]}] actionbar {"text":"Ваше ядро разрушают!","color":"red"}
+                unless score ${team[0]+"_notification"} global matches 1..
+                    as @a[team=!${team[0]}] at @s playsound block.note_block.pling player @s
+                set ${(entity) (team[0]+"_notification")} -> global = 50
                 
                 if score ${team[1]} Nexus matches 0 function {
                     playsound entity.zombie_villager.cure block @a ~ ~ ~ 25 0.9
@@ -71,14 +74,14 @@ for (team in teams) {
                             if score ${team_[1]} Nexus matches 1.. scoreboard players add extra_lives temp 1
                     }
                     
+                    bossbar set ${(resource) team[0]} name [{"text":"Ядро ","color":"white"},{"text":${team[5]},"color":${team[2]}},{"text":" разрушено!","color":"white"}]
+                    bossbar set ${(resource) team[0]} color red
+                    bossbar set ${(resource) team[0]} max 100
+                    set ${(entity) (team[0]+"_notification")} -> global = 100
                     eval log(entity<@a>, ["Ядро команды ",{text:team[5],color:team[2]}," разрушено."])
                     eval log(entity<@a[team=${team[0]}]>, ["За потерю ядра команда получила по 6 монет на каждого участника, ускорение и +",{"score":{objective:"temp",name:"extra_lives"}},{text:"❤",color:team[2]}," за оставшиеся ядра."])
                     
                     scoreboard players operation ${team[1]} extra_lives += extra_lives temp
-                    #as @a[team=${team[0]}] function {
-                    #    if data entity @s Inventory[{Slot:103b}] give @s chainmail_helmet{Enchantments:[{id:"minecraft:vanishing_curse",lvl:1s}],Unbreakable:1b}
-                    #    unless data entity @s Inventory[{Slot:103b}] replaceitem entity @s armor.head chainmail_helmet{Enchantments:[{id:"minecraft:vanishing_curse",lvl:1s}],Unbreakable:1b}
-                    #}
                     
                     if score minutes global matches ..139 function $extra_lives_resource
                     
@@ -99,6 +102,17 @@ for (team in teams) {
     }   
 }
 scoreboard players reset @a mine_diamond_ore
+
+# Оповещения о разрушении ядра
+for (team in teams) {
+    if score ${team[0]+"_notification"} global matches 1.. function {
+        store result bossbar ${(resource) team[0]} value scoreboard players get ${team[0]+"_notification"} global
+        bossbar set ${(resource) team[0]} players @a
+        scoreboard players remove ${team[0]+"_notification"} global 1
+        if score ${team[0]+"_notification"} global matches 0
+            bossbar set ${(resource) team[0]} players
+    }
+}
 
 
 as @a at @s function sr:stages/game/player
@@ -145,14 +159,14 @@ unless score disablewin global matches 1 function {
         if score minutes global matches 10 function {
             title @a times 3 7 3
             title @a title {"text":"!","bold":true,"color":"red"}
-            eval log(entity<@a>, ["Через ",{"text":"5 минут","color":"red"}," (в 0:15) в центральном магазине появится ",{"text":"[тёмный оберег]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"\"','\"§9Владелец§7 при попадании в бездну\"','\"§eвозвращается на базу§7, восстана-\"','\"§7вливая здоровье и сытость.\"','\"\"','\"§7Неуязвим.\"','\"§7Не подвержен гравитации.\"']}}}"}}," в ",{"text":"единственном","underlined":true}," экземпляре."])
+            eval log(entity<@a>, ["Через ",{"text":"5 минут","color":"red"}," (в 0:15) в центральном магазине появится ",{"text":"[тёмный оберег]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"\"','\"§9Владелец§7 при попадании в бездну\"','\"§eвозвращается на базу§7, восстана-\"','\"§7вливая здоровье и сытость, если\"','\"§7ядро не разрушено.\"','\"\"','\"§7Неуязвим.\"','\"§7Не подвержен гравитации.\"']}}}"}}," в ",{"text":"единственном","underlined":true}," экземпляре."])
             as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
         }
         # 0:15
         if score minutes global matches 15 function {
             title @a times 3 7 3
             title @a title {"text":"!","bold":true,"color":"red"}
-            eval log(entity<@a>, ["В центральном магазине появился ",{"text":"[тёмный оберег]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"\"','\"§9Владелец§7 при попадании в бездну\"','\"§eвозвращается на базу§7, восстана-\"','\"§7вливая здоровье и сытость.\"','\"\"','\"§7Неуязвим.\"','\"§7Не подвержен гравитации.\"']}}}"}}," в ",{"text":"единственном","underlined":true}," экземпляре."])
+            eval log(entity<@a>, ["В центральном магазине появился ",{"text":"[тёмный оберег]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"\"','\"§9Владелец§7 при попадании в бездну\"','\"§eвозвращается на базу§7, восстана-\"','\"§7вливая здоровье и сытость, если\"','\"§7ядро не разрушено.\"','\"\"','\"§7Неуязвим.\"','\"§7Не подвержен гравитации.\"']}}}"}}," в ",{"text":"единственном","underlined":true}," экземпляре."])
             as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
             positioned 908 92 1018 as @e[limit=1,tag=shop.center,distance=..1] function {
                 data modify entity @s Offers.Recipes[7].maxUses set value 1
@@ -164,14 +178,14 @@ unless score disablewin global matches 1 function {
         if score minutes global matches 35 function {
             title @a times 3 7 3
             title @a title {"text":"!","bold":true,"color":"red"}
-            eval log(entity<@a>, ["Через ",{"text":"10 минут","color":"red"}," (в 0:45) в центральном магазине появится второй ",{"text":"[тёмный оберег]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"\"','\"§9Владелец§7 при попадании в бездну\"','\"§eвозвращается на базу§7, восстана-\"','\"§7вливая здоровье и сытость.\"','\"\"','\"§7Неуязвим.\"','\"§7Не подвержен гравитации.\"']}}}"}}," в ",{"text":"единственном","underlined":true}," экземпляре."])
+            eval log(entity<@a>, ["Через ",{"text":"10 минут","color":"red"}," (в 0:45) в центральном магазине появится второй ",{"text":"[тёмный оберег]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"\"','\"§9Владелец§7 при попадании в бездну\"','\"§eвозвращается на базу§7, восстана-\"','\"§7вливая здоровье и сытость, если\"','\"§7ядро не разрушено.\"','\"\"','\"§7Неуязвим.\"','\"§7Не подвержен гравитации.\"']}}}"}}," в ",{"text":"единственном","underlined":true}," экземпляре."])
             as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
         }
         # 0:45
         if score minutes global matches 45 function {
             title @a times 3 7 3
             title @a title {"text":"!","bold":true,"color":"red"}
-            eval log(entity<@a>, ["В центральном магазине появился второй ",{"text":"[тёмный оберег]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"\"','\"§9Владелец§7 при попадании в бездну\"','\"§eвозвращается на базу§7, восстана-\"','\"§7вливая здоровье и сытость.\"','\"\"','\"§7Неуязвим.\"','\"§7Не подвержен гравитации.\"']}}}"}}," в ",{"text":"единственном","underlined":true}," экземпляре."])
+            eval log(entity<@a>, ["В центральном магазине появился второй ",{"text":"[тёмный оберег]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"\"','\"§9Владелец§7 при попадании в бездну\"','\"§eвозвращается на базу§7, восстана-\"','\"§7вливая здоровье и сытость, если\"','\"§7ядро не разрушено.\"','\"\"','\"§7Неуязвим.\"','\"§7Не подвержен гравитации.\"']}}}"}}," в ",{"text":"единственном","underlined":true}," экземпляре."])
             as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
             positioned 908 92 1018 as @e[limit=1,tag=shop.center,distance=..1] function {
                 data modify entity @s Offers.Recipes[8].maxUses set value 1

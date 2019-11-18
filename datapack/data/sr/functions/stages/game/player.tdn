@@ -147,6 +147,10 @@ if entity @s[gamemode=spectator] function {
 
 # Монета за убийство
 if score @s coin_for_kill matches 1.. function {
+    for (team in teams) {
+        if entity @s[team=${team[0]}]
+            scoreboard players add ${team[1]} team_kills 1
+    }
     give @s sunflower{HideFlags:1,Enchantments:[{id:"minecraft:fortune",lvl:-1s}],RepairCost:100,display:{Name:"{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}"}}
     title @s times 0 25 1
     title @s title ""
@@ -176,7 +180,9 @@ if score @s use.bag matches 1.. function {
     scoreboard players reset @s use.bag
 }
 
-
+# has_amulet
+store result score has_amulet temp clear @s music_disc_stal 0
+        
 # Границы
 positioned 908 ~ ~ particle damage_indicator ~-150.75 ~ ~ 0 10 10 0 5 normal @s
 positioned 908 ~ ~ particle damage_indicator ~150.75 ~ ~ 0 10 10 0 5 normal @s
@@ -195,21 +201,26 @@ if entity @s[gamemode=!spectator] unless score @s spec_stun matches 1.. unless s
     }
     # Быстрое выпадение из мира
     if entity @s[y=-64,dy=-10] function {
-        store result score has_amulet temp clear @s music_disc_stal 0
         if score has_amulet temp matches 1.. function {
             for (team in teams) {
                 if entity @s[team=${team[0]}] function {
-                    tellraw @a ["",{"selector":"@s"}," переродился с помощью ",{"text":"[тёмного оберега]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"\"','\"§9Владелец§7 при попадании в бездну\"','\"§eвозвращается на базу§7, восстана-\"','\"§7вливая здоровье и сытость.\"','\"\"','\"§7Неуязвим.\"','\"§7Не подвержен гравитации.\"']}}}"}}]
-                    effect give @s instant_health 5 20
-                    effect give @s saturation 5 20
-                    effect give @s resistance 1 20
-                    /${"tp @s " + team[6] + " " + team[13]+ " 0"}
+                    if score ${team[1]} Nexus matches 1.. function {
+                        tellraw @a ["",{"selector":"@s"}," переродился с помощью ",{"text":"[тёмного оберега]","color":"aqua","hoverEvent":{"action":"show_item","value":"{id:music_disc_stal,Count:1b,tag:{HideFlags:63,Enchantments:[{id:\"fortune\",lvl:-1s}],display:{Name:'{\"text\":\"Тёмный оберег\",\"color\":\"aqua\",\"italic\":false}',Lore:['\"\"','\"§9Владелец§7 при попадании в бездну\"','\"§eвозвращается на базу§7, восстана-\"','\"§7вливая здоровье и сытость, если\"','\"§7ядро не разрушено.\"','\"\"','\"§7Неуязвим.\"','\"§7Не подвержен гравитации.    \"']}}}"}}]    
+                       effect give @s instant_health 5 20
+                       effect give @s saturation 5 20
+                       effect give @s resistance 1 20
+                       /${"tp @s " + team[6] + " " + team[13]+ " 0"}
+                   }
+                   unless score ${team[1]} Nexus matches 1.. kill @s
                 }
             }
         }
         unless score has_amulet temp matches 1.. kill @s
     }
 } 
+
+if score has_amulet temp matches 1..
+    particle smoke ~ ~.35 ~ 0 0 0 0.02 3 force
 
 
 # [Наблюдать]
@@ -265,6 +276,7 @@ if score @s death matches 1.. function {
     scoreboard players remove @s death_list 1
     
     if entity @s[gamemode=!spectator] function {
+        scoreboard players set @s dont_tp 20
         scoreboard players set @s respawning 100
         if entity @s[team=aqua] function {
             set x -> temp = @s.Pos[0]
@@ -274,7 +286,7 @@ if score @s death matches 1.. function {
                 scoreboard players remove z temp 1018
                 if score z temp matches ..0
                     scoreboard players operation z temp *= negative const
-                if score z temp < x temp scoreboard players set @s respawning 300
+                if score z temp < x temp scoreboard players set @s respawning 220
             }
         }
         if entity @s[team=green] function {
@@ -285,7 +297,7 @@ if score @s death matches 1.. function {
                 scoreboard players remove z temp 1018
                 if score z temp matches 0..
                     scoreboard players operation z temp *= negative const
-                if score z temp > x temp scoreboard players set @s respawning 300
+                if score z temp > x temp scoreboard players set @s respawning 220
             }
         }
         if entity @s[team=yellow] function {
@@ -296,7 +308,7 @@ if score @s death matches 1.. function {
                 scoreboard players remove x temp 908
                 if score x temp matches 0..
                     scoreboard players operation x temp *= negative const
-                if score x temp > z temp scoreboard players set @s respawning 300
+                if score x temp > z temp scoreboard players set @s respawning 220
             }
         }
         if entity @s[team=purple] function {
@@ -307,7 +319,7 @@ if score @s death matches 1.. function {
                 scoreboard players remove x temp 908
                 if score x temp matches ..0
                     scoreboard players operation x temp *= negative const
-                if score x temp < z temp scoreboard players set @s respawning 300
+                if score x temp < z temp scoreboard players set @s respawning 220
             }
         }
     }
@@ -315,7 +327,8 @@ if score @s death matches 1.. function {
 
 # Таймер возрождения
 if score @s respawning matches 1.. function {
-    tp @s 908 1000 1018
+    if score @s dont_tp matches 1.. scoreboard players remove @s dont_tp 1
+    unless score @s dont_tp matches 1.. tp @s 908 1000 1018
     effect give @s blindness 2 0 true
     effect give @s weakness 2 9 true
     effect give @s invisibility 2 0 true

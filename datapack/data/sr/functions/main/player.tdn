@@ -140,11 +140,14 @@ if entity @s[nbt={Inventory:[{Slot:102b,id:"minecraft:elytra"}]}] function {
         }
         scoreboard players reset @s aviate
     }
-    if score @s damage_taken matches 1.. function {
+    if entity @s[tag=elytra_taken_damage] function {
         kill @s
     }
 }
-scoreboard players reset @s damage_taken
+if entity @s[tag=elytra_taken_damage] function {
+    advancement revoke @s only sr:_elytra_taken_damage
+    tag @s remove elytra_taken_damage
+}
 
 
 # Уменьшение времени голода с кадавра

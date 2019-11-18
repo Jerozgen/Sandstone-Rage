@@ -126,7 +126,7 @@ define function tick {
         kill @s[type=boat]
         kill @s[type=ender_pearl]
         if entity @s[type=trident] at @s function {
-            summon item {Tags:["trident_return"],Item:{id:"trident",Count:1b}}
+            summon item{Tags:["trident_return"],Item:{id:"trident",Count:1b}}
             set @e[tag=trident_return,distance=..0.5,limit=1].Item = @s.Trident
             kill @s
         }
@@ -136,6 +136,7 @@ define function tick {
         kill @e[type=item,distance=..0.5]
         kill @e[type=experience_orb,distance=..0.5]
         as @a[scores={mine_diamond_ore=1..},distance=..10] function {
+            scoreboard players reset @s mine_diamond_ore
             var give_diamonds = resource</give_diamonds>
             function give_diamonds {
                 give @s diamond

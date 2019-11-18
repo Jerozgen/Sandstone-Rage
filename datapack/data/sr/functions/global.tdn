@@ -52,14 +52,14 @@ define objective team
 define objective kill_streak playerKillCount
 define objective spec_stun
 define objective streak_bossbar
-define objective stat.totem used:totem_of_undying {"text":"Тотемов использовано","italic":true}
-define objective stat.sgapple used:enchanted_golden_apple {"text":"Зачар. яблок съедено","italic":true}
 define objective use.sgapple used:enchanted_golden_apple
 define objective use.xpbottle used:experience_bottle
 define objective respawning
+define objective dont_tp
 define objective glowing
 define objective aviate custom:aviate_one_cm
 define objective damage_taken custom:damage_taken
+define objective team_kills dummy {"text":"Убийства","italic":true}
 
 define function const {
     @ tag load

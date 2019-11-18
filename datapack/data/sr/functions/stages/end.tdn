@@ -21,8 +21,7 @@ if score stats global matches 150.. function {
     
     if score _stats global matches 0 scoreboard objectives setdisplay sidebar death_list
     if score _stats global matches 1 scoreboard objectives setdisplay sidebar kills
-    if score _stats global matches 2 scoreboard objectives setdisplay sidebar stat.sgapple
-    if score _stats global matches 3 scoreboard objectives setdisplay sidebar stat.totem
+    if score _stats global matches 2 scoreboard objectives setdisplay sidebar team_kills
     
     set stats -> global = 0
 }

@@ -1,0 +1,17 @@
+{
+    "criteria": {
+        "husk": {
+            "trigger": "minecraft:entity_hurt_player",
+            "conditions": {
+                "damage": {
+                    "source_entity": {
+                        "type": "minecraft:player"
+                    }
+                }
+            }
+        }
+    },
+    "rewards": {
+        "function": "sr:_elytra_taken_damage"
+    }
+}

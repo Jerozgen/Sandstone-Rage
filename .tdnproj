@@ -2,6 +2,20 @@
   "default-namespace": "sr",
   "language-level": 2,
   "datapack-output": "J:\\Minecraft\\.minecraft\\saves\\Sandstone Rage\\datapacks\\Sandstone Rage",
-  "resources-output": "C:\\Users\\Jerozgen\\Trident\\out\\Sandstone Rage-resources",
-  "export-comments": false
+  "resources-output": "",
+  "export-comments": false,
+  "strict-nbt": false,
+  "strict-text-components": false,
+  "target-version": [
+    1,
+    14,
+    0
+  ],
+  "export-gamelog": true,
+  "game-logger": {
+    "compact": false,
+    "timestamp-enabled": true,
+    "pos-enabled": false,
+    "line-number-enabled": false
+  }
 }
