@@ -355,25 +355,8 @@ if entity @s[team=!none] unless score @s respawning matches 1.. if entity @s[gam
         for (team in teams) {
             if entity @s[team=${team[0]}] /${"tp @s " + team[6] + " " + team[13]+ " 0"}
         }
-        replaceitem entity @s armor.head conduit{
-            Unbreakable:1b,
-            display:{Name:"{\"text\":\"Защита от отталкивания\",\"italic\":false}"},
-            Enchantments:[
-                {id:"minecraft:vanishing_curse",lvl:1s},
-                {id:"minecraft:binding_curse",lvl:1s}],
-            AttributeModifiers:[{AttributeName:"generic.knockbackResistance",Name:"generic.knockbackResistance",Slot:"head",Amount:1d,Operation:0,UUIDMost:44017l,UUIDLeast:149652l}]}
         effect give @s resistance 5 9
     }
     if score @s time_since_death matches 1..101 
         particle witch ~ ~.85 ~ 0 0.6 0 0.1 1
-    if score @s time_since_death matches 101 function {
-        for (team in teams) {
-            if entity @s[team=${team[0]}] function {
-                #if score ${team[1]} Nexus matches 0
-                #    replaceitem entity @s armor.head chainmail_helmet{Enchantments:[{id:"minecraft:vanishing_curse",lvl:1s}],Unbreakable:1b}
-                unless score ${team[1]} Nexus matches 0
-                    replaceitem entity @s armor.head air
-            }
-        }
-    }
 }
