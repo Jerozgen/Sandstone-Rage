@@ -31,29 +31,7 @@ define function tick {
     
     # Кручение торговцев
     as @e[type=wandering_trader] at @s facing entity @p[gamemode=!spectator,distance=..3] feet tp @s ^ ^ ^ ~ ~
-    
-    # Запрет подбирания торговцев в лодку
-    define function villager_passenger {
-        define function kill {
-            if entity @s[type=boat] function {
-                if entity @s[nbt={Type:"oak"}] loot spawn ~ ~ ~ loot sr:oak_boat
-                if entity @s[nbt={Type:"birch"}] loot spawn ~ ~ ~ loot sr:birch_boat
-                if entity @s[nbt={Type:"spruce"}] loot spawn ~ ~ ~ loot sr:spruce_boat
-                if entity @s[nbt={Type:"jungle"}] loot spawn ~ ~ ~ loot sr:jungle_boat
-                if entity @s[nbt={Type:"dark_oak"}] loot spawn ~ ~ ~ loot sr:dark_oak_boat
-                if entity @s[nbt={Type:"acacia"}] loot spawn ~ ~ ~ loot sr:acacia_boat
-            }
-            if entity @s[type=minecart] loot spawn ~ ~ ~ loot sr:minecart
-            kill @s
-            schedule function sr:shops/tp 2t
-        }
-        if data entity @s Passengers[{id:"minecraft:wandering_trader"}] at @s function /kill
-        if data entity @s Passengers[{id:"minecraft:villager"}] at @s function /kill
-    }
-    as @e[type=boat] function /villager_passenger
-    as @e[type=minecart] function /villager_passenger
-    
-    
+     
     # Лобби
     as @e[x=17,y=200,z=13,distance=..128] function {
         if entity @s[type=player] at @s function {

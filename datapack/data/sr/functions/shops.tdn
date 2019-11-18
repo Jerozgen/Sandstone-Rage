@@ -88,7 +88,7 @@ define function spawn {
                         eval villager_data = ",VillagerData:{level:5,type:" + new tag_string(villager["type"]) + ",profession:" + new tag_string(villager["profession"]) + "}"
                     }
                     eval shop_number += 1
-                    /${"summon " + entity_ + " " + (position[0] + 0.5) + " " + position[1] + " " + (position[2] + 0.5) + " {Tags:[\"shop\",\"shop" + shop_number + "\",\"shop." + villager_id + "\"],Silent:1b,Invulnerable:1b,NoAI:1b,Rotation:[" + new tag_float(position[3]) + ", 0f],CustomName:" + new nbt(new text_component(villager["name"])) + villager_data + ",Offers:{Recipes:" + trades +     "}}"}
+                    /${"summon area_effect_cloud " + (position[0] + 0.5) + " " + (position[1] - 0.375) + " " + (position[2] + 0.5) + " {Tags:[\"shop\",\"shop" + shop_number + "\",\"shop." + villager_id + "\"],Duration:-1,Age:-2147483648,WaitTime:-2147483648,Passengers:[{id:\""+ entity_ +"\",Tags:[\"shop\",\"shop" + shop_number + "\",\"shop." + villager_id + "\"],Silent:1b,Invulnerable:1b,NoAI:1b,Rotation:[" + new tag_float(position[3]) + ", 0f],CustomName:" + new nbt(new text_component(villager["name"])) + villager_data + ",Offers:{Recipes:" + trades +     "}}]}"}
               }
             }
         }
