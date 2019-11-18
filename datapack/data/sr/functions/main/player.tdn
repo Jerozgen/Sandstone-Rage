@@ -17,6 +17,12 @@ for (team in teams) {
     store result entity @s[team=${team[0]}] Inventory[{id:"minecraft:shield"}].tag.BlockEntityTag.Base int 1 scoreboard players get ${(string) team[14]} const
 }
 
+effect clear @s[x=17,y=200,z=13,distance=128..] weakness
+effect give @s[nbt={SelectedItem:{id:"minecraft:wooden_axe"}}] weakness 99999 0 true
+effect give @s[nbt={SelectedItem:{id:"minecraft:stone_axe"}}] weakness 99999 0 true
+effect give @s[nbt={SelectedItem:{id:"minecraft:iron_axe"}}] weakness 99999 0 true
+effect give @s[nbt={SelectedItem:{id:"minecraft:golden_axe"}}] weakness 99999 0 true
+effect give @s[nbt={SelectedItem:{id:"minecraft:diamond_axe"}}] weakness 99999 0 true
 
 # Файербол
 store result score @s unluck effect clear @s unluck
