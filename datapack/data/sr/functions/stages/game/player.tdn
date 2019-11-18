@@ -258,7 +258,7 @@ if score @s death matches 1.. function {
     for (team in teams) {
         if entity @s[team=${team[0]}] function {
             if score minutes global matches ..139 if score ${team[1]} Nexus matches 0 function {
-                unless score ${team[1]} extra_lives matches 1.. gamemode spectator @score
+                unless score ${team[1]} extra_lives matches 1.. gamemode spectator @s
                 if score ${team[1]} extra_lives matches 1.. function {
                     scoreboard players remove ${team[1]} extra_lives 1
                     at @a[team=${team[0]}] playsound block.conduit.deactivate master @s ~ ~ ~ 1 0.9
