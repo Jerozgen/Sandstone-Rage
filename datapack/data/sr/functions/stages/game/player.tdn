@@ -96,10 +96,10 @@ if entity @s[scores={placed_pumpkin=1..}] function {
         if entity @s[team=${team[0]}] as @e[type=iron_golem,tag=!init_golem] function {
             team join ${team[0]} @s
             data modify entity @s CustomName set value ${new nbt(new text_component({text:"Голем " + team[5],color:team[2]}))}
-            
         }
     }
     data merge entity @e[type=iron_golem,tag=!init_golem,limit=1] {PlayerCreated:0b,Attributes:[{Name:generic.maxHealth,Base:30d}],Health:30f}
+    replaceitem entity @e[type=iron_golem,tag=!init_golem,limit=1] armor.head iron_ingot
     tag @e[type=iron_golem] add init_golem
     scoreboard players reset @s placed_pumpkin
 }

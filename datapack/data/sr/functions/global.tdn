@@ -60,6 +60,7 @@ define objective glowing
 define objective aviate custom:aviate_one_cm
 define objective damage_taken custom:damage_taken
 define objective team_kills dummy {"text":"Убийства","italic":true}
+define objective angry_timer
 
 define function const {
     @ tag load

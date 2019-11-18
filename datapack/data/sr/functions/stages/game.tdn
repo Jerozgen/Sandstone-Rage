@@ -127,6 +127,37 @@ bossbar set kill_streak players @a[scores={streak_bossbar=1..}]
 scoreboard players remove @a[scores={streak_bossbar=1..}] streak_bossbar 1
 
 
+# Голем
+as @e[type=iron_golem] at @s function {
+    if score @s angry_timer matches 1.. function {
+        scoreboard players remove @s angry_timer 1
+        if score @s angry_timer matches 0 function {
+            set @s.ArmorItems[3].tag.AttackUUIDLeast = 0
+            set @s.ArmorItems[3].tag.AttackUUIDMost = 0
+        }
+    }
+    for (team in teams) {
+        if entity @s[team=${team[0]}] if entity @a[distance=..8,team=!${team[0]},team=!none,gamemode=!spectator,gamemode=!creative,nbt=!{ActiveEffects:[{Id:14b}]}] function {
+            store result score compare temp 
+                set @s.ArmorItems[3].tag.AttackUUIDLeast = @p[team=!${team[0]},team=!none,gamemode=!spectator,gamemode=!creative,nbt=!{ActiveEffects:[{Id:14b}]}].UUIDLeast
+            unless score compare temp matches 0 function {
+                store result score compare temp 
+                    set @s.ArmorItems[3].tag.AttackUUIDMost = @p[team=!${team[0]},team=!none,gamemode=!spectator,gamemode=!creative,nbt=!{ActiveEffects:[{Id:14b}]}].UUIDMost
+                unless score compare temp matches 0 function {
+                    set @s -> angry_timer = 200
+                    summon area_effect_cloud{
+                        Tags: ["angry"], 
+                        Duration: 10, DurationOnUse: 0, WaitTime: 0, Particle: "block air", 
+                        Effects:[{Id: 7b, Duration: 10, Amplifier: 31b, ShowParticles:0b}], 
+                        Radius: 1.0f, RadiusOnUse: 0.0f, RadiusPerTick: 0.0f}
+                    set @e[tag=angry,sort=nearest,limit=1].OwnerUUIDLeast = @p[team=!aqua,gamemode=!spectator].UUIDLeast
+                    set @e[tag=angry,sort=nearest,limit=1].OwnerUUIDMost = @p[team=!aqua,gamemode=!spectator].UUIDMost
+                }
+            }
+        }
+    }
+}
+
 # Тёмный оберег
 as @e[type=item,nbt={Item:{id:"minecraft:music_disc_stal"}}] function {
     set @s.Invulnerable = 1b
