@@ -68,22 +68,12 @@ for (team in teams) {
                     playsound item.totem.use player @a ~ ~ ~ 25 0
                     setblock ~ ~ ~ structure_block
                     
-                    set extra_lives -> temp = 0
-                    for (team_ in teams) {
-                        do if (team_[0] != team[0])
-                            if score ${team_[1]} Nexus matches 1.. scoreboard players add extra_lives temp 1
-                    }
-                    
                     bossbar set ${(resource) team[0]} name [{"text":"Ядро ","color":"white"},{"text":${team[5]},"color":${team[2]}},{"text":" разрушено!","color":"white"}]
                     bossbar set ${(resource) team[0]} color red
                     bossbar set ${(resource) team[0]} max 100
                     set ${(entity) (team[0]+"_notification")} -> global = 100
                     eval log(entity<@a>, ["Ядро команды ",{text:team[5],color:team[2]}," разрушено."])
-                    eval log(entity<@a[team=${team[0]}]>, ["За потерю ядра команда получила по 6 монет на каждого участника, ускорение и +",{"score":{objective:"temp",name:"extra_lives"}},{text:"❤",color:team[2]}," за оставшиеся ядра."])
-                    
-                    scoreboard players operation ${team[1]} extra_lives += extra_lives temp
-                    
-                    if score minutes global matches ..139 function $extra_lives_resource
+                    eval log(entity<@a[team=${team[0]}]>, ["За потерю ядра команда получила по 6 монет на каждого участника и скорость."])
                     
                     give @a[team=${team[0]},gamemode=!spectator,scores={time_since_death=1..}] cod_spawn_egg{EntityTag:{id:"minecraft:armor_stand",NoGravity:1b,Marker:1b,Invisible:1b,Silent:1b,Tags:["bag"]},
                         display:{

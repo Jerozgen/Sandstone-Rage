@@ -60,11 +60,6 @@ set Жёлтые -> Nexus = 40
 set Фиолетовые -> Nexus = 40
 set Голубые -> Nexus = 40
 
-set Голубые -> extra_lives = 0
-set Зелёные -> extra_lives = 0
-set Жёлтые -> extra_lives = 0
-set Фиолетовые -> extra_lives = 0
-
 unless entity @a[team=green] function {
     scoreboard players reset Зелёные Nexus
     at @e[tag=nexus_green] run setblock ~ ~ ~ structure_block

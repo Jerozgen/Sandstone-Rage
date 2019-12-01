@@ -257,19 +257,12 @@ if score @s death matches 1.. function {
     tag @e remove husk_head
     for (team in teams) {
         if entity @s[team=${team[0]}] function {
-            if score minutes global matches ..139 if score ${team[1]} Nexus matches 0 function {
-                unless score ${team[1]} extra_lives matches 1.. gamemode spectator @s
-                if score ${team[1]} extra_lives matches 1.. function {
-                    scoreboard players remove ${team[1]} extra_lives 1
-                    at @a[team=${team[0]}] playsound block.conduit.deactivate master @s ~ ~ ~ 1 0.9
-                    if score ${team[1]} extra_lives matches 0 function {
-                        at @a[team=${team[0]}] playsound block.end_portal_frame.fill master @s ~ ~ ~ 1 0.9
-                        eval log(entity<@a[team=${team[0]}]>, ["У вашей команды осталось 0",{"text":"❤","color":team[2]},". Вы больше не сможете возродится."])
-                    }
-                }
-                function $extra_lives_resource
+            if score minutes global matches ..139 if score ${team[1]} Nexus matches 0 function start_spectate {
+                gamemode spectator @s
+                playsound block.conduit.deactivate master @a[team=${team[0]}] ~ ~ ~ 1 0.9
+                eval log(entity<@a>, ["",{selector:"@s"}," больше не может возродиться."])
             }
-            if score minutes global matches 140.. gamemode spectator @s
+            if score minutes global matches 140.. function /start_spectate
         }
     }
     

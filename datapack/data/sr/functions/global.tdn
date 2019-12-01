@@ -16,7 +16,6 @@ define objective global
 define objective temp
 define objective const
 define objective Nexus dummy ["Sandstone ",{"text":"Rage","color":"gold","bold":true}]
-define objective extra_lives
 define objective death_list dummy {"text":"Смерти","italic":true}
 define objective coin_for_kill
 define objective timer
@@ -92,28 +91,4 @@ var start_timer = function (seconds) {
     title @a title {"text":${(string) seconds},"color":"gold"}
     title @a subtitle "ИГРА НАЧИНАЕТСЯ"
     as @a at @s run playsound ui.button.click master @s
-}
-
-var extra_lives_resource = resource</extra_lives>
-define function extra_lives {
-    for (team in teams) {
-        if entity @a[team=${team[0]},scores={mine_diamond_ore=1..}] function {
-            scoreboard players add ${team[1]} extra_lives 1
-            eval log(entity<@a[team=${team[0]}]>, ["За разрушение ядра ваша команда получила +1",{text:"❤",color:team[2]}])
-        }
-    }
-    for (team in teams) {
-        if score ${team[1]} Nexus matches 0 function { 
-            unless score ${team[1]} extra_lives matches 1.. team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"⁰ "]
-            if score ${team[1]} extra_lives matches 1 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"¹ "]
-            if score ${team[1]} extra_lives matches 2 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"² "]
-            if score ${team[1]} extra_lives matches 3 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"³ "]
-            if score ${team[1]} extra_lives matches 4 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"⁴ "]
-            if score ${team[1]} extra_lives matches 5 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"⁵ "]
-            if score ${team[1]} extra_lives matches 6 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"⁶ "]
-            if score ${team[1]} extra_lives matches 7 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"⁷ "]
-            if score ${team[1]} extra_lives matches 8 team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"⁸ "]
-            if score ${team[1]} extra_lives matches 9.. team modify ${team[9]} prefix ["",{"text":"❤","color":${team[2]}},"⁸⁺ "]
-        }
-    }
 }
