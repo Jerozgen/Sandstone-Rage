@@ -74,7 +74,6 @@ if entity @s[team=purple] at @a[team=purple,distance=1..,gamemode=!spectator] pa
 if score @s adv.mine_coin matches 1 advancement grant @s only sr:destroy_coin
 if score @s adv.mine_diamond matches 1 advancement grant @s only sr:diamond
 if score @s adv.mine_diamond matches 40 advancement grant @s only sr:55_diamond
-if score @s adv.deaths matches 30 advancement grant @s only sr:died_30
 if score @s kills matches 40 advancement grant @s only sr:40_kills
 
 for (team in teams) {

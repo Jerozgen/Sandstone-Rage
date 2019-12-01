@@ -9,14 +9,6 @@ spawnpoint @a[team=green] 776 82 1018
 spawnpoint @a[team=purple] 908 82 1150
 
 
-# Достижения
-unless score adv.candle global matches 1.. unless block 908 82 1018 torch function {
-    advancement grant @a[scores={adv.mine_torch=1..}] only sr:candle
-    scoreboard players set adv.candle global 1
-}
-scoreboard players reset @a adv.mine_torch
-
-
 # Предотвращение превращения крестьян в ведьм
 as @e[type=witch] function {
     function sr:shops/spawn

@@ -31,8 +31,6 @@ define objective death deathCount
 define objective mine_diamond_ore mined:diamond_ore
 define objective adv.mine_coin mined:yellow_glazed_terracotta
 define objective adv.mine_diamond mined:diamond_ore
-define objective adv.deaths deathCount
-define objective adv.mine_torch mined:torch
 define objective placed_pumpkin used:carved_pumpkin
 define objective iron_ingot mined:iron_ore
 define objective gold_ingot mined:gold_ore

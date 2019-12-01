@@ -18,7 +18,6 @@ scoreboard players reset @a kill_streak
 scoreboard players reset @e generator
 scoreboard players add @a[team=!none] death_list 0
 scoreboard players add @a[team=!none] kills 0
-scoreboard players reset adv.candle global
 
 in the_end tp @a[team=!none] 0 0 0
 gamemode survival @a[team=!none]
