@@ -8,7 +8,7 @@
   "strict-text-components": false,
   "target-version": [
     1,
-    14,
+    15,
     0
   ],
   "export-gamelog": true,
