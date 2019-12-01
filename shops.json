@@ -24,32 +24,6 @@
                 },
                 "cost": [
                     {
-                        "item": "iron_ingot",
-                        "count": 24
-                    }
-                ]
-            },
-            {
-                "buy": {
-                    "item": "sunflower",
-                    "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
-                    "count": 1
-                },
-                "cost": [
-                    {
-                        "item":"gold_ingot",
-                        "count": 16
-                    }
-                ]
-            },
-            {
-                "buy": {
-                    "item": "sunflower",
-                    "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
-                    "count": 1
-                },
-                "cost": [
-                    {
                         "item":"diamond",
                         "count": 1
                     }
@@ -83,19 +57,6 @@
             },
             {
                 "buy": {
-                    "item": "quartz",
-                    "count": 12
-                },
-                "cost": [
-                    {
-                        "item": "sunflower",
-                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
-                        "count": 1
-                    }
-                ]
-            },
-            {
-                "buy": {
                     "item": "stone",
                     "count": 1
                 },
@@ -103,61 +64,6 @@
                     {
                         "item": "cobblestone",
                         "count": 1
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "villagers": [
-            {
-                "id":"food",
-                "type": "desert",
-                "profession": "butcher",
-                "name":{"text":"Пища"},
-                "positions": [ 
-                    [906, 81, 1153, -90],
-                    [1043, 81, 1020, 180],
-                    [773, 81, 1016, 0],
-                    [910, 81, 883, 90],
-                    [19, 200, -12, 90]
-                ]
-            }
-        ],
-        "trades":[
-            {
-                "buy": {
-                    "item": "apple",
-                    "count": 1
-                },
-                "cost": [
-                    {
-                        "item": "quartz",
-                        "count": 2
-                    }
-                ]
-            },
-            {
-                "buy": {
-                    "item": "pumpkin_pie",
-                    "count": 1
-                },
-                "cost": [
-                    {
-                        "item":"quartz",
-                        "count": 4
-                    }
-                ]
-            },
-            {
-                "buy": {
-                    "item": "cake",
-                    "count": 1
-                },
-                "cost": [
-                    {
-                        "item":"quartz",
-                        "count": 5
                     }
                 ]
             }
@@ -289,6 +195,19 @@
             }
         ],
         "trades":[
+            {
+                "buy": {
+                    "item": "apple",
+                    "count": 8
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    }
+                ]
+            },
             {
                 "buy": {
                     "item": "scaffolding",

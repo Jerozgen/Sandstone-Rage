@@ -20,7 +20,6 @@ define function tick {
     eval block_generator("oak", block<dark_oak_log>, 50)
     eval block_generator("iron", block<iron_ore>, 125)
     eval block_generator("gold", block<gold_ore>, 120)
-    eval block_generator("quartz", block<nether_quartz_ore>, 40)
     eval item_generator("cobble", item<cobblestone>, 40, 6.5)
     eval item_generator("coin_down", item<sunflower{HideFlags:1,Enchantments:[{id:"minecraft:fortune",lvl:-1s}],RepairCost:100,display:{Name:"{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}"}}>, 150, 6)
     eval item_generator("coin_up", item<sunflower{HideFlags:1,Enchantments:[{id:"minecraft:fortune",lvl:-1s}],RepairCost:100,display:{Name:"{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}"}}>, 160, 4)
@@ -65,7 +64,6 @@ define function tick {
                 CanDestroy:[
                     "minecraft:gold_ore",
                     "minecraft:iron_ore",
-                    "minecraft:nether_quartz_ore",
                     "minecraft:diamond_ore",
                     "minecraft:light_weighted_pressure_plate"
                 ],Enchantments:[{id:"minecraft:fortune",lvl:3s}]},
@@ -78,7 +76,6 @@ define function tick {
                 CanDestroy:[
                     "minecraft:gold_ore",
                     "minecraft:iron_ore",
-                    "minecraft:nether_quartz_ore",
                     "minecraft:diamond_ore",
                     "minecraft:light_weighted_pressure_plate"
                 ],Enchantments:[{id:"minecraft:fortune",lvl:2s}]},
@@ -91,7 +88,6 @@ define function tick {
                 CanDestroy:[
                     "minecraft:gold_ore",
                     "minecraft:iron_ore",
-                    "minecraft:nether_quartz_ore",
                     "minecraft:diamond_ore",
                     "minecraft:light_weighted_pressure_plate"
                 ],Enchantments:[{id:"minecraft:silk_touch",lvl:1s}]},
@@ -141,12 +137,7 @@ define function tick {
         set deathkill -> global = 0
     }
     
-    
     as @e[tag=oak] at @s kill @e[type=item,distance=..0.5]
-    as @e[tag=quartz] at @s function {
-        kill @e[type=item,distance=..0.5]
-        kill @e[type=experience_orb,distance=..0.5]
-    }
     
     # Снятие свечения с сущностей
     effect clear @e[type=!player] glowing

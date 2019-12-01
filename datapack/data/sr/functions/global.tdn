@@ -36,7 +36,6 @@ define objective adv.mine_torch mined:torch
 define objective placed_pumpkin used:carved_pumpkin
 define objective iron_ingot mined:iron_ore
 define objective gold_ingot mined:gold_ore
-define objective quartz mined:nether_quartz_ore
 define objective dark_oak_log mined:dark_oak_log
 define objective sdark_oak_log mined:stripped_dark_oak_log
 define objective use.carrot_stick used:carrot_on_a_stick
