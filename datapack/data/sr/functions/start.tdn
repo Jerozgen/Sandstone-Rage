@@ -89,6 +89,8 @@ team modify nexus.aqua prefix {"text":"→ ","color":"aqua"}
 
 gamerule randomTickSpeed 3
 gamerule reducedDebugInfo true
+gamerule fireDamage true
+gamerule fallDamage true
 
 worldborder set 4000
 time set 23650

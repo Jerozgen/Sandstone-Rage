@@ -40,10 +40,7 @@ define function tick {
             
             effect give @s weakness 3 10 true
             effect give @s resistance 3 10 true
-            effect give @s fire_resistance 3 10 true
             effect give @s saturation 60 10 true
-            effect clear @s jump_boost
-            effect give @s jump_boost 3 255 true
             effect clear @s wither 
             
             /stopsound @s * block.bell.use

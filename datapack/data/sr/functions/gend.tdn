@@ -13,5 +13,9 @@ team modify purple collisionRule never
 
 scoreboard players reset Время Nexus
 
+gamerule randomTickSpeed 0
+gamerule fireDamage false
+gamerule fallDamage false
+
 worldborder set 4000
-time set 13000
+time set 18000
