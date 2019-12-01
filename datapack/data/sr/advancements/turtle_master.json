@@ -1,13 +1,14 @@
 {
     "display": {
         "title": {
-            "text": "Пожилая черепаха"
+            "text": "Ползёт, как черепаха"
         },
         "description": {
             "text": "Выстрелите в кого-нибудь стрелой замедления"
         },
         "icon": {
-            "item": "minecraft:turtle_spawn_egg"
+            "item": "minecraft:tipped_arrow",
+            "nbt": "{Potion:\"minecraft:strong_slowness\"}"
         },
         "frame": "task",
         "show_toast": true,
@@ -30,5 +31,5 @@
             }
         }
     },
-    "parent": "sr:kill_each_team_player"
+    "parent": "sr:power_5"
 }

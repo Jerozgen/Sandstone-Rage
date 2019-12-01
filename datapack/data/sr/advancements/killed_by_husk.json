@@ -25,5 +25,5 @@
             }
         }
     },
-    "parent": "sr:outside_the_world"
+    "parent": "sr:root"
 }

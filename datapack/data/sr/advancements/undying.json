@@ -19,5 +19,5 @@
             "trigger": "minecraft:impossible"
         }
     },
-    "parent": "sr:died_30"
+    "parent": "sr:root"
 }
