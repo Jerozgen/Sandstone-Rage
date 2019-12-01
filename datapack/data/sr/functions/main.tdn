@@ -298,20 +298,24 @@ define function tick {
    
     # Восстановление блоков в лобби
     setblock 15 200 -9 chest[facing=east]
-    replaceitem block 15 200 -9 container.0 sweet_berries 5
-    replaceitem block 15 200 -9 container.8 sweet_berries 5
-    replaceitem block 15 200 -9 container.18 sweet_berries 5
-    replaceitem block 15 200 -9 container.26 sweet_berries 5
+    replaceitem block 15 200 -9 container.0 bread 2
+    replaceitem block 15 200 -9 container.8 bread 2
+    replaceitem block 15 200 -9 container.9 bread 2
+    replaceitem block 15 200 -9 container.17 bread 2
+    replaceitem block 15 200 -9 container.18 bread 2
+    replaceitem block 15 200 -9 container.26 bread 2
     var i = 11
     for (i = 11; i <= 15; i += 1) {
         /${"replaceitem block 15 200 -9 container." + i + ' golden_axe{CanDestroy:["minecraft:dark_oak_log"],Unbreakable:1,HideFlags:4}'}
     }
     
     setblock 19 200 -9 chest[facing=west]
-    replaceitem block 19 200 -9 container.0 sweet_berries 5
-    replaceitem block 19 200 -9 container.8 sweet_berries 5
-    replaceitem block 19 200 -9 container.18 sweet_berries 5
-    replaceitem block 19 200 -9 container.26 sweet_berries 5
+    replaceitem block 19 200 -9 container.0 bread 2
+    replaceitem block 19 200 -9 container.8 bread 2
+    replaceitem block 19 200 -9 container.9 bread 2
+    replaceitem block 19 200 -9 container.17 bread 2
+    replaceitem block 19 200 -9 container.18 bread 2
+    replaceitem block 19 200 -9 container.26 bread 2
     var i = 10
     for (i = 10; i <= 16; i += 1) {
         /${"replaceitem block 19 200 -9 container." + i + ' golden_chestplate'}
