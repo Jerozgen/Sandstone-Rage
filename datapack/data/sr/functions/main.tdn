@@ -108,16 +108,8 @@ define function tick {
         kill @e[type=experience_orb,distance=..0.5]
         as @a[scores={mine_diamond_ore=1..},distance=..10] function {
             scoreboard players reset @s mine_diamond_ore
-            var give_diamonds = resource</give_diamonds>
-            function give_diamonds {
-                give @s diamond
-                xp add @s 5 points
-            }
-            if entity @s[nbt={SelectedItem:{tag:{Enchantments:[{id:"minecraft:fortune",lvl:2s}]}}}] function $give_diamonds
-            if entity @s[nbt={SelectedItem:{tag:{Enchantments:[{id:"minecraft:fortune",lvl:3s}]}}}] function {
-                function $give_diamonds
-                function $give_diamonds
-            }
+            give @s diamond
+            xp add @s 5 points
         }
     }
     
