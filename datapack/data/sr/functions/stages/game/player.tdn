@@ -107,7 +107,7 @@ if entity @s[scores={placed_pumpkin=1..}] function {
 gamemode spectator @s[team=!none,x=17,y=200,z=13,distance=..128]
 
 # Наблюдение
-if entity @s[gamemode=spectator] function {
+if entity @s[gamemode=spectator] unless score @s respawning matches 1.. function {
     if score minutes global matches ..154 unless entity @s[x=758,y=-200,z=868,dx=300,dy=455,dz=300] tp @s 908 112 1018
     if score minutes global matches 155.. unless entity @s[x=-1000,y=100,z=0,distance=..90] tp @s -1000 100 0
     
@@ -124,14 +124,8 @@ if entity @s[gamemode=spectator] function {
                 effect give @s blindness 5 0 true
                 set @s -> spec_stun = 100
             }
-            unless entity @a[team=${team[0]},gamemode=!spectator,distance=..8] function {
-                effect give @s blindness 2 0 true
-                effect give @s nausea 4 0 true
-            }
-            # Следование за игроком из своей команды
-            unless entity @a[team=${team[0]},gamemode=!spectator,distance=..7] at @p[team=${team[0]},gamemode=!spectator] facing entity @s feet function {
-                tp @s ^ ^ ^6.85 facing entity @p[team=${team[0]},gamemode=!spectator]
-            }
+            # Наблюдение за игроком из своей команды
+            spectate @p[team=${team[0]},gamemode=!spectator,distance=..7]
         }
     }
     

@@ -280,35 +280,36 @@ if score sub_players temp matches 2.. function {
 }
 
 unless score disablewin global matches 1 function {
+    scoreboard players add @a spec_stun 0
     # Победа
-    if entity @a[gamemode=!spectator,team=green] 
-        unless entity @a[gamemode=!spectator,team=yellow] 
-        unless entity @a[gamemode=!spectator,team=aqua] 
-        unless entity @a[gamemode=!spectator,team=purple] 
+    if entity @a[gamemode=!spectator,scores={spec_stun=..0},team=green] 
+        unless entity @a[gamemode=!spectator,scores={spec_stun=..0},team=yellow] 
+        unless entity @a[gamemode=!spectator,scores={spec_stun=..0},team=aqua] 
+        unless entity @a[gamemode=!spectator,scores={spec_stun=..0},team=purple] 
             function {
                 function sr:gend
                 eval log(entity<@a>, ["Победила ",{"text":"зелёная","color":"green"}," команда!"])
             }
-    unless entity @a[gamemode=!spectator,team=green] 
-        if entity @a[gamemode=!spectator,team=yellow] 
-        unless entity @a[gamemode=!spectator,team=aqua] 
-        unless entity @a[gamemode=!spectator,team=purple] 
+    unless entity @a[gamemode=!spectator,scores={spec_stun=..0},team=green] 
+        if entity @a[gamemode=!spectator,scores={spec_stun=..0},team=yellow] 
+        unless entity @a[gamemode=!spectator,scores={spec_stun=..0},team=aqua] 
+        unless entity @a[gamemode=!spectator,scores={spec_stun=..0},team=purple] 
             function {
                 function sr:gend
                 eval log(entity<@a>, ["Победила ",{"text":"жёлтая","color":"yellow"}," команда!"])
             }
-    unless entity @a[gamemode=!spectator,team=green] 
-        unless entity @a[gamemode=!spectator,team=yellow] 
-        if entity @a[gamemode=!spectator,team=aqua] 
-        unless entity @a[gamemode=!spectator,team=purple] 
+    unless entity @a[gamemode=!spectator,scores={spec_stun=..0},team=green] 
+        unless entity @a[gamemode=!spectator,scores={spec_stun=..0},team=yellow] 
+        if entity @a[gamemode=!spectator,scores={spec_stun=..0},team=aqua] 
+        unless entity @a[gamemode=!spectator,scores={spec_stun=..0},team=purple] 
             function {
                 function sr:gend
                 eval log(entity<@a>, ["Победила ",{"text":"голубая","color":"aqua"}," команда!"])
             }
-    unless entity @a[gamemode=!spectator,team=green] 
-        unless entity @a[gamemode=!spectator,team=yellow] 
-        unless entity @a[gamemode=!spectator,team=aqua] 
-        if entity @a[gamemode=!spectator,team=purple] 
+    unless entity @a[gamemode=!spectator,scores={spec_stun=..0},team=green] 
+        unless entity @a[gamemode=!spectator,scores={spec_stun=..0},team=yellow] 
+        unless entity @a[gamemode=!spectator,scores={spec_stun=..0},team=aqua] 
+        if entity @a[gamemode=!spectator,scores={spec_stun=..0},team=purple] 
             function {
                 function sr:gend
                 eval log(entity<@a>, ["Победила ",{"text":"фиолетовая","color":"dark_purple"}," команда!"])
