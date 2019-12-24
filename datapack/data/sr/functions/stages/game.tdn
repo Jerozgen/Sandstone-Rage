@@ -54,7 +54,7 @@ for (team in teams) {
                     
                     team modify ${team[9]} prefix ["",{"text":"×","color":${team[2]}}," "]
                     bossbar set ${(resource) team[0]} name [{"text":"Ядро ","color":"white"},{"text":${team[5]},"color":${team[2]}},{"text":" разрушено!","color":"white"}]
-                    bossbar set ${(resource) team[0]} color red
+                    /${"bossbar set " + (resource) team[0] + " color red"}
                     bossbar set ${(resource) team[0]} max 100
                     set ${(entity) (team[0]+"_notification")} -> global = 100
                     eval log(entity<@a>, ["Ядро команды ",{text:team[5],color:team[2]}," разрушено."])
