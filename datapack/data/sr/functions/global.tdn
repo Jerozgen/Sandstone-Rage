@@ -69,13 +69,13 @@ define function const {
 }
 
 var teams = [
-    ["green",   "Зелёные",       "green",    "a",    "зелёной",      "зелёных",        coordinates<776 81 1018>,   "-5 202 3",  "[nbt={OnGround:1b},x=-5,y=203,z=4,dx=0,dy=0,dz=0]",
+    ["green",   "Зелёные",       "green",    "a",    "зелёной",      "зелёных",        coordinates<776 81 1018>,   coordinates<-5 202 3>,  entity<@s[x=-5,y=203,z=4,dx=0,dy=0,dz=0]>,
          "nexus.green",      coordinates<-5 203 4>,      0,          coordinates<845 87 1018>,  "-90",  5,  "зелёную"],
-    ["yellow",  "Жёлтые",       "yellow",       "e",    "жёлтой",      "жёлтых",        coordinates<908 81 886>,    "-5 202 -3", "[nbt={OnGround:1b},x=-5,y=203,z=-4,dx=0,dy=0,dz=0]",
+    ["yellow",  "Жёлтые",       "yellow",       "e",    "жёлтой",      "жёлтых",        coordinates<908 81 886>,    coordinates<-5 202 -3>, entity<@s[x=-5,y=203,z=-4,dx=0,dy=0,dz=0]>,
         "znexus.yellow",    coordinates<-5 203 -4>,     16776960,   coordinates<908 87 955>,    "0",    4,  "жёлтую"],
-    ["aqua",    "Голубые",      "aqua",         "b",    "голубой",     "голубых",       coordinates<1040 81 1018>,  "-1 202 -3", "[nbt={OnGround:1b},x=-1,y=203,z=-4,dx=0,dy=0,dz=0]",
+    ["aqua",    "Голубые",      "aqua",         "b",    "голубой",     "голубых",       coordinates<1040 81 1018>,  coordinates<-1 202 -3>, entity<@s[x=-1,y=203,z=-4,dx=0,dy=0,dz=0]>,
         "nexus.aqua",       coordinates<-1 203 -4>,     65535,      coordinates<971 87 1018>,   "90",   3,  "голубую"],
-    ["purple",  "Фиолетовые",   "dark_purple",  "5",    "фиолетовой",  "фиолетовых",    coordinates<908 81 1150>,   "-1 202 3",  "[nbt={OnGround:1b},x=-1,y=203,z=4,dx=0,dy=0,dz=0]",
+    ["purple",  "Фиолетовые",   "dark_purple",  "5",    "фиолетовой",  "фиолетовых",    coordinates<908 81 1150>,   coordinates<-1 202 3>,  entity<@s[x=-1,y=203,z=4,dx=0,dy=0,dz=0]>,
          "znexus.purple",    coordinates<-1 203 4>,      9437439,    coordinates<908 87 1081>,  "180",  10, "фиолетовую"]
 ]
 

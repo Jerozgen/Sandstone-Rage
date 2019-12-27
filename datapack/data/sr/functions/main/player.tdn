@@ -141,7 +141,7 @@ if entity @s[nbt={Inventory:[{Slot:102b,id:"minecraft:elytra"}]}] function {
         at @s particle campfire_cosy_smoke ~ ~ ~ 0 0 0 0 1 force
         if entity @s[x=-3,y=203,z=0,distance=..5] function {
             for (team in teams) {
-                raw ${"if entity @s" + team[8].replace("nbt={OnGround:1b},","")} function {
+                if entity ${team[8]} function {
                     eval log(entity<@a[team=${team[0]}]>,[{selector:"@s"},{text:" покинул ожидание принятия в команду."}])
                     eval log(entity<@s>,"Вы покинули ожидание принятия в команду.")
                 }

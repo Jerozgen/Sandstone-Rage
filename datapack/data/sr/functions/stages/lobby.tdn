@@ -36,17 +36,16 @@ as @a at @s function {
         }
     }
     
-    
     # [Присоединиться к команде]
     for (team in teams) {
         scoreboard players enable @s ${"join" + team[0]}
         unless score @s ${"join" + team[0]} matches 0 function {
-            raw ${"if block " + team[7] + " birch_wall_sign"} function {
+            if block ${team[7]} birch_wall_sign function {
                 unless entity @a[team=${team[0]}] function {
                     eval log(entity<@s>,["Вы присоединились к ",{text:team[4],color:team[2]}," команде."])
                     team join ${team[0]} @s
                 }
-                unless entity @s[team=${team[0]}] if entity @a[team=${team[0]}] raw ${"unless entity @a" + team[8].replace("nbt={OnGround:1b},","")} function {
+                unless entity @s[team=${team[0]}] if entity @a[team=${team[0]}] raw ${"unless entity " + ((string) team[8]).replace("@s","@a")} function {
                     scoreboard players enable @s leavewaiting
                     eval log(entity<@s>, "Вы отправили запрос на присоединение.")
                     eval log(entity<@a[team=${team[0]}]>, ["",{selector:"@s"}," хочет присоединиться к вашей команде, принять его? ",
@@ -58,7 +57,7 @@ as @a at @s function {
             } 
             scoreboard players set @s ${"join" + team[0]} 0
         }
-        raw ${"unless block " + team[7] + " birch_wall_sign"} function {
+        unless block ${team[7]} birch_wall_sign function {
             scoreboard players reset @s ${"join" + team[0]}
         }
     }
@@ -68,7 +67,7 @@ as @a at @s function {
     scoreboard players add @s leavewaiting 0
     unless score @s leavewaiting matches 0 function {
         for (team in teams) {
-            raw ${"if entity @s" + team[8].replace("nbt={OnGround:1b},","")} function {
+            if entity ${team[8]} function {
                 eval log(entity<@a[team=${team[0]}]>,[{selector:"@s"},{text:" покинул ожидание принятия в команду."}])
             }
         }
@@ -84,13 +83,11 @@ as @a at @s function {
     scoreboard players enable @s accept
     unless score @s accept matches 0 function {
         for (team in teams) {
-            if entity @s[team=${team[0]}] function {
-                /${"team join " + team[0] + " @a" + team[8].replace("nbt={OnGround:1b},","")}
-                raw ${"if entity @a" + team[8].replace("nbt={OnGround:1b},","")} function {
-                    eval log(entity<@a[team=${team[0]}]>, ["", {"selector":("@a" + team[8].replace("nbt={OnGround:1b},",""))}," принят в команду."])
-                }
-                /${"scoreboard players reset @a" + team[8].replace("nbt={OnGround:1b},","") + " leavewaiting"}
-                /${"tp @a" + team[8].replace("nbt={OnGround:1b},","") + " 0 200 0 -90 ~"}
+            if entity @s[team=${team[0]}] as @a if entity ${team[8]}[nbt={OnGround:1b}] function {
+                team join ${team[0]} @s
+                eval log(entity<@a[team=${team[0]}]>, ["",{"selector":"@s"}," принят в команду."])
+                scoreboard players reset @s leavewaiting
+                tp @s 0 200 0 -90 ~
             }
         }
         set @s -> accept = 0
@@ -101,13 +98,11 @@ as @a at @s function {
     scoreboard players enable @s decline
     unless score @s decline matches 0 function {
         for (team in teams) {
-            if entity @s[team=${team[0]}] function {
-                raw ${"if entity @a" + team[8].replace("nbt={OnGround:1b},","")} function {
-                    eval log(entity<@a[team=${team[0]}]>, ["",{"selector":("@a" + team[8].replace("nbt={OnGround:1b},",""))}," отклонён."])
-                }
-                eval log((entity) ("@a" + team[8].replace("nbt={OnGround:1b},","")), "Вас отклонили.")
-                /${"scoreboard players reset @a" + team[8].replace("nbt={OnGround:1b},","") + " leavewaiting"}
-                /${"tp @a" + team[8].replace("nbt={OnGround:1b},","") + " 0 200 0 -90 ~"}
+            if entity @s[team=${team[0]}] as @a if entity ${team[8]}[nbt={OnGround:1b}] function {
+                eval log(entity<@a[team=${team[0]}]>, ["",{"selector":"@s"}," отклонён."])
+                eval log(entity<@s>, "Вас отклонили.")
+                scoreboard players reset @s leavewaiting
+                tp @s 0 200 0 -90 ~
             }
         }
         set @s -> decline = 0
@@ -129,7 +124,7 @@ as @a at @s function {
     
     
     for (team in teams) {
-        if entity ${(entity) ("@s" + team[8])} function {
+        if entity ${team[8]} function {
             particle composter -2 204.5 0 0.2 0.2 0.4 1 2 normal @s
             particle composter -4 204.5 0 0.2 0.2 0.4 1 2 normal @s
             # Автовход в команду из колбы, если никого в команде не найдено
