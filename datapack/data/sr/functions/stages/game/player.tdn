@@ -97,7 +97,7 @@ if entity @s[scores={placed_pumpkin=1..}] function {
             data modify entity @s CustomName set value ${new nbt(new text_component({text:"Голем " + team[5],color:team[2]}))}
         }
     }
-    data merge entity @e[type=iron_golem,tag=!init_golem,limit=1] {PlayerCreated:0b,Attributes:[{Name:generic.maxHealth,Base:30d}],Health:30f}
+    data merge entity @e[type=iron_golem,tag=!init_golem,limit=1] {ArmorItems:[{},{},{},{id:"iron_ingot",Count:1b}],PlayerCreated:0b,Attributes:[{Name:generic.maxHealth,Base:30d}],Health:30f}
     replaceitem entity @e[type=iron_golem,tag=!init_golem,limit=1] armor.head iron_ingot
     tag @e[type=iron_golem] add init_golem
     scoreboard players reset @s placed_pumpkin
@@ -126,6 +126,8 @@ if entity @s[gamemode=spectator] unless score @s respawning matches 1.. function
             }
             # Наблюдение за игроком из своей команды
             spectate @p[team=${team[0]},gamemode=!spectator,distance=..7]
+            unless entity @a[team=${team[0]},gamemode=!spectator,distance=..7]
+                spectate @r[team=${team[0]},gamemode=!spectator]
         }
     }
     
@@ -138,30 +140,6 @@ if entity @s[gamemode=spectator] unless score @s respawning matches 1.. function
 }
 
 
-# Монета за убийство
-if score @s coin_for_kill matches 1.. function {
-    for (team in teams) {
-        if entity @s[team=${team[0]}]
-            scoreboard players add ${team[1]} team_kills 1
-    }
-    give @s sunflower{HideFlags:1,Enchantments:[{id:"minecraft:fortune",lvl:-1s}],RepairCost:100,display:{Name:"{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}"}}
-    title @s times 0 25 1
-    title @s title ""
-    title @s subtitle ["",{"text":"⚔","color":"red"}," ",{"selector":"@a[scores={death=1..}]"}]
-    if score @s kill_streak matches 1 title @s actionbar [{"text":"☠","color":"gray"},{"text":"☠☠☠","color":"dark_gray"}]
-    if score @s kill_streak matches 2 title @s actionbar [{"text":"☠☠","color":"gray"},{"text":"☠☠","color":"dark_gray"}]
-    if score @s kill_streak matches 3 title @s actionbar [{"text":"☠☠☠","color":"gray"},{"text":"☠","color":"dark_gray"}]
-    if score @s kill_streak matches 4 title @s actionbar {"text":"☠☠☠☠","color":"gray"}
-    playsound block.note_block.chime player @s
-    playsound block.note_block.bell player @s ~ ~ ~ 1 0
-    # Серия убийств
-    if score @s kill_streak matches 4.. function {
-        give @s sunflower{HideFlags:1,Enchantments:[{id:"minecraft:fortune",lvl:-1s}],RepairCost:100,display:{Name:"{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}"}}
-        set @s -> streak_bossbar = 100
-        scoreboard players reset @s kill_streak
-    }
-    scoreboard players reset @s coin_for_kill
-}
 
 
 
@@ -193,7 +171,7 @@ if entity @s[gamemode=!spectator] unless score @s spec_stun matches 1.. unless s
     if entity @s[y=-64,dy=-10] function {
         kill @s
     }
-} 
+}
 
 
 # [Наблюдать]
@@ -211,7 +189,33 @@ if score @s glowing matches 1.. function {
 
 
 # Смерть
-if score @s death matches 1.. function {
+if score @s time_since_death matches 0 function {
+    # Монета за убийство
+    as @a if score @s coin_for_kill matches 1.. function {
+        for (team in teams) {
+            if entity @s[team=${team[0]}]
+                scoreboard players add ${team[1]} team_kills 1
+        }
+        give @s sunflower{HideFlags:1,Enchantments:[{id:"minecraft:fortune",lvl:-1s}],RepairCost:100,display:{Name:"{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}"}}
+        title @s times 0 25 1
+        title @s title ""
+        title @s subtitle ["",{"text":"⚔","color":"red"}," ",{"selector":"@a[scores={death=1..}]"}]
+        if score @s kill_streak matches 1 title @s actionbar [{"text":"☠","color":"gray"},{"text":"☠☠☠","color":"dark_gray"}]
+        if score @s kill_streak matches 2 title @s actionbar [{"text":"☠☠","color":"gray"},{"text":"☠☠","color":"dark_gray"}]
+        if score @s kill_streak matches 3 title @s actionbar [{"text":"☠☠☠","color":"gray"},{"text":"☠","color":"dark_gray"}]
+        if score @s kill_streak matches 4 title @s actionbar {"text":"☠☠☠☠","color":"gray"}
+        playsound block.note_block.chime player @s
+        playsound block.note_block.bell player @s ~ ~ ~ 1 0
+        # Серия убийств
+        if score @s kill_streak matches 4.. function {
+            give @s sunflower{HideFlags:1,Enchantments:[{id:"minecraft:fortune",lvl:-1s}],RepairCost:100,display:{Name:"{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}"}}
+            set @s -> streak_bossbar = 100
+            scoreboard players reset @s kill_streak
+        }
+        scoreboard players reset @s coin_for_kill
+    }
+
+    # обработка смерти
     set @a[scores={spec_stun=1..}] -> spec_stun = 1
     for (team in teams) {
         if entity @s[team=${team[0]}] summon husk ~ ~ ~ {
@@ -239,6 +243,7 @@ if score @s death matches 1.. function {
         }
     }
     
+    set @s -> time_since_death = 1
     scoreboard players reset @s kill_streak
     scoreboard players reset @s death
     scoreboard players remove @s death_list 1
