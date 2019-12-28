@@ -31,19 +31,6 @@
             },
             {
                 "buy": {
-                    "item": "redstone",
-                    "count": 36
-                },
-                "cost": [
-                    {
-                        "item": "sunflower",
-                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
-                        "count": 1
-                    }
-                ]
-            },
-            {
-                "buy": {
                     "item": "slime_ball",
                     "count": 5
                 },
@@ -57,12 +44,49 @@
             },
             {
                 "buy": {
+                    "item": "redstone",
+                    "count": 36
+                },
+                "cost": [
+                    {
+                        "item": "sunflower",
+                        "tag": "{HideFlags:1,RepairCost:100,Enchantments:[{id:\"minecraft:fortune\",lvl:-1s}],display:{Name:'{\"italic\":false,\"color\":\"gold\",\"text\":\"Монета\"}'}}",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "quartz",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "redstone",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
                     "item": "stone",
                     "count": 1
                 },
                 "cost": [
                     {
                         "item": "cobblestone",
+                        "count": 1
+                    }
+                ]
+            },
+            {
+                "buy": {
+                    "item": "honey_block",
+                    "count": 1
+                },
+                "cost": [
+                    {
+                        "item": "slime_block",
                         "count": 1
                     }
                 ]
