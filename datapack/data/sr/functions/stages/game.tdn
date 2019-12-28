@@ -196,7 +196,8 @@ unless score disablewin global matches 1 function {
             as @a at @s playsound entity.arrow.hit_player master @s ~ ~ ~ 1 0.85
             at @e[tag=nexus] setblock ~ ~ ~ structure_block
             for (team in teams) {
-                tp @e[tag=${"nexus_" + team[0]}] ${team[12]}
+                #tp @e[tag=${"nexus_" + team[0]}] ${team[12]}
+                /${"tp @e[tag=nexus_" + team[0] + "] " + team[12]}
                 if score ${team[1]} Nexus matches 1.. at @e[tag=${"nexus_" + team[0]}] setblock ~ ~ ~ diamond_ore
             }
         }
