@@ -68,7 +68,7 @@ as @a at @s function {
     unless score @s leavewaiting matches 0 function {
         for (team in teams) {
             if entity ${team[8]} function {
-                eval log(entity<@a[team=${team[0]}]>,[{selector:"@s"},{text:" покинул ожидание принятия в команду."}])
+                eval log(entity<@a[team=${team[0]}]>,["",{selector:"@s"},{text:" покинул ожидание принятия в команду."}])
             }
         }
         
